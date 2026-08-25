@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JobCalender</string>
+
+    <string name="nav_calendar">Calendrier</string>
+    <string name="nav_applications">Candidatures</string>
+    <string name="nav_settings">Réglages</string>
+
+    <string name="screen_calendar_placeholder">Calendrier</string>
+    <string name="screen_applications_placeholder">Candidatures</string>
+    <string name="screen_settings_placeholder">Réglages</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Only the launch theme lives in XML; everything after setContent is JobCalenderTheme. -->
+    <style name="Theme.JobCalender" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
