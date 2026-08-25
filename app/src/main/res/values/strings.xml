@@ -106,6 +106,51 @@
     <string name="action_call">Appeler</string>
     <string name="action_whatsapp">WhatsApp</string>
 
+    <!-- About and updates -->
+    <string name="about_title">À propos</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_section_update">Mise à jour</string>
+    <string name="about_check">Rechercher une mise à jour</string>
+    <string name="about_checking">Vérification\u2026</string>
+    <string name="about_up_to_date">JobCalender est à jour.</string>
+    <string name="about_releases">Publications</string>
+    <string name="about_repository">github.com/goddivor/jobcalender-mobile</string>
+    <string name="about_section_data">Données</string>
+    <string name="about_data_summary">%1$d candidatures, %2$d événements</string>
+    <string name="about_never_synced">Jamais synchronisé</string>
+    <string name="about_section_license">Licence</string>
+    <string name="about_license">Projet personnel. Tous droits réservés.</string>
+
+    <string name="update_available_title">Mise à jour disponible</string>
+    <string name="update_meta">Version %1$s</string>
+    <string name="update_notes_title">Nouveautés</string>
+    <string name="update_later">Plus tard</string>
+    <string name="update_install">Installer</string>
+    <string name="update_downloading">Téléchargement</string>
+    <string name="update_progress">%1$s sur %2$s</string>
+    <string name="update_blocked_title">Installation bloquée</string>
+    <string name="update_blocked_body">Android n\'autorise pas encore JobCalender à installer des applications. Ouvrez les réglages, puis autorisez l\'installation depuis cette application. Le fichier téléchargé est conservé.</string>
+    <string name="update_open_settings">Ouvrir les réglages</string>
+    <string name="update_failed">Le téléchargement a échoué.</string>
+
+    <!-- Reminders -->
+    <string name="notification_channel_name">Rendez-vous</string>
+    <string name="notification_channel_description">Rappels avant un entretien, un test ou une réunion.</string>
+    <string name="reminder_tomorrow_title">Demain\u00A0: %1$s</string>
+    <string name="reminder_soon_title">Dans une heure\u00A0: %1$s</string>
+    <string name="reminder_closing_title">Clôture proche\u00A0: %1$s</string>
+    <string name="reminder_body">%1$s\u00A0· %2$s</string>
+    <string name="settings_section_reminders">Rappels</string>
+    <string name="settings_reminder_day_before">La veille du rendez-vous</string>
+    <string name="settings_reminder_day_before_sub">À 20h00</string>
+    <string name="settings_reminder_hour_before">Une heure avant</string>
+    <string name="settings_reminder_hour_before_sub">Uniquement pour les événements qui ont une heure</string>
+    <string name="settings_reminder_closing">Échéances de candidature</string>
+    <string name="settings_reminder_closing_sub">Trois jours avant la clôture</string>
+    <string name="settings_notifications_blocked">Les notifications sont désactivées. Autorisez-les pour recevoir les rappels.</string>
+    <string name="settings_notifications_allow">Autoriser les notifications</string>
+    <string name="settings_exact_alarms_blocked">Android limite les alarmes exactes\u00A0: les rappels peuvent arriver en retard.</string>
+
     <!-- Settings -->
     <string name="settings_section_sync">Synchronisation</string>
     <string name="settings_last_sync">Dernière synchronisation\u00A0: %1$s</string>

@@ -48,6 +48,18 @@ class SyncSettings @Inject constructor(
         context.syncStore.edit { it[DYNAMIC_COLOR] = enabled }
     }
 
+    suspend fun setReminderDayBefore(enabled: Boolean) {
+        context.syncStore.edit { it[REMINDER_DAY_BEFORE] = enabled }
+    }
+
+    suspend fun setReminderHourBefore(enabled: Boolean) {
+        context.syncStore.edit { it[REMINDER_HOUR_BEFORE] = enabled }
+    }
+
+    suspend fun setReminderClosing(enabled: Boolean) {
+        context.syncStore.edit { it[REMINDER_CLOSING] = enabled }
+    }
+
     private fun Preferences.toState() = SyncState(
         apiUrl = this[API_URL],
         token = this[TOKEN],
@@ -55,6 +67,9 @@ class SyncSettings @Inject constructor(
         syncOnLaunch = this[SYNC_ON_LAUNCH] ?: true,
         themeMode = this[THEME_MODE] ?: FOLLOW_SYSTEM,
         dynamicColor = this[DYNAMIC_COLOR] ?: false,
+        reminderDayBefore = this[REMINDER_DAY_BEFORE] ?: true,
+        reminderHourBefore = this[REMINDER_HOUR_BEFORE] ?: true,
+        reminderClosing = this[REMINDER_CLOSING] ?: false,
     )
 
     private companion object {
@@ -64,6 +79,9 @@ class SyncSettings @Inject constructor(
         val SYNC_ON_LAUNCH = booleanPreferencesKey("sync_on_launch")
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+        val REMINDER_DAY_BEFORE = booleanPreferencesKey("reminder_day_before")
+        val REMINDER_HOUR_BEFORE = booleanPreferencesKey("reminder_hour_before")
+        val REMINDER_CLOSING = booleanPreferencesKey("reminder_closing")
         const val FOLLOW_SYSTEM = "FOLLOW_SYSTEM"
     }
 }
@@ -75,6 +93,9 @@ data class SyncState(
     val syncOnLaunch: Boolean = true,
     val themeMode: String = "FOLLOW_SYSTEM",
     val dynamicColor: Boolean = false,
+    val reminderDayBefore: Boolean = true,
+    val reminderHourBefore: Boolean = true,
+    val reminderClosing: Boolean = false,
 ) {
     val isConfigured: Boolean get() = apiUrl != null && token != null
 }

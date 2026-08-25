@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tg.goddivor.jobcalender.data.repository.EventRepository
+import tg.goddivor.jobcalender.reminders.ReminderScheduler
 import tg.goddivor.jobcalender.domain.model.Event
 import tg.goddivor.jobcalender.domain.model.EventMode
 import tg.goddivor.jobcalender.domain.model.EventOutcome
@@ -44,6 +45,7 @@ data class EventEditUiState(
 @HiltViewModel
 class EventEditViewModel @Inject constructor(
     private val repository: EventRepository,
+    private val reminders: ReminderScheduler,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -81,6 +83,8 @@ class EventEditViewModel @Inject constructor(
     fun save() {
         viewModelScope.launch {
             repository.upsert(_state.value.form.toEvent(original))
+            // A moved appointment needs its alarms moved with it.
+            runCatching { reminders.reschedule() }
             _state.update { it.copy(saved = true, dirty = false) }
         }
     }
@@ -89,6 +93,7 @@ class EventEditViewModel @Inject constructor(
         val target = original ?: return
         viewModelScope.launch {
             repository.delete(target)
+            runCatching { reminders.reschedule() }
             onDone()
         }
     }

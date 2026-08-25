@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,17 +30,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tg.goddivor.jobcalender.R
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import tg.goddivor.jobcalender.data.remote.SyncResult
+import tg.goddivor.jobcalender.reminders.ReminderNotifier
 import tg.goddivor.jobcalender.ui.format.LOME
 import tg.goddivor.jobcalender.ui.format.hhmm
 import tg.goddivor.jobcalender.ui.format.short
@@ -50,8 +60,16 @@ import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    onOpenAbout: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    var notificationsAllowed by remember { mutableStateOf(ReminderNotifier.canPost(context)) }
+    val askNotifications = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted -> notificationsAllowed = granted }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_settings)) }) },
@@ -110,6 +128,46 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                 onCheckedChange = viewModel::setDynamicColor,
             )
 
+            SectionLabel(stringResource(R.string.settings_section_reminders))
+            if (!notificationsAllowed) {
+                Hint(stringResource(R.string.settings_notifications_blocked))
+                Button(
+                    onClick = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    Icon(Icons.Filled.Notifications, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Text(
+                        text = stringResource(R.string.settings_notifications_allow),
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
+                }
+            }
+            if (!state.exactAlarmsAllowed) {
+                Hint(stringResource(R.string.settings_exact_alarms_blocked))
+            }
+            SwitchRow(
+                title = stringResource(R.string.settings_reminder_day_before),
+                subtitle = stringResource(R.string.settings_reminder_day_before_sub),
+                checked = state.reminderDayBefore,
+                onCheckedChange = viewModel::setReminderDayBefore,
+            )
+            SwitchRow(
+                title = stringResource(R.string.settings_reminder_hour_before),
+                subtitle = stringResource(R.string.settings_reminder_hour_before_sub),
+                checked = state.reminderHourBefore,
+                onCheckedChange = viewModel::setReminderHourBefore,
+            )
+            SwitchRow(
+                title = stringResource(R.string.settings_reminder_closing),
+                subtitle = stringResource(R.string.settings_reminder_closing_sub),
+                checked = state.reminderClosing,
+                onCheckedChange = viewModel::setReminderClosing,
+            )
+
             SectionLabel(stringResource(R.string.settings_section_data))
             InfoRow(
                 title = stringResource(
@@ -120,10 +178,16 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             )
 
             SectionLabel(stringResource(R.string.settings_section_about))
-            InfoRow(
-                title = stringResource(R.string.app_name),
-                subtitle = stringResource(R.string.settings_version, state.version),
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth().clickable(onClick = onOpenAbout),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                InfoRow(
+                    title = stringResource(R.string.app_name),
+                    subtitle = stringResource(R.string.settings_version, state.version),
+                    modifier = Modifier.weight(1f),
+                )
+            }
             Box(Modifier.height(24.dp))
         }
     }
@@ -274,8 +338,8 @@ private fun SwitchRow(
 }
 
 @Composable
-private fun InfoRow(title: String, subtitle: String? = null) {
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+private fun InfoRow(title: String, subtitle: String? = null, modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
         Text(title, style = MaterialTheme.typography.bodyLarge)
         subtitle?.let {
             Text(
