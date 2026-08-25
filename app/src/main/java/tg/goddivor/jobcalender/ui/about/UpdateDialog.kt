@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tg.goddivor.jobcalender.R
 import tg.goddivor.jobcalender.updates.InstallState
+import tg.goddivor.jobcalender.updates.UpdateUiState
 
 /**
  * One dialog for the whole update path: offer, download, install, and the case where Android has
@@ -25,7 +26,7 @@ import tg.goddivor.jobcalender.updates.InstallState
  */
 @Composable
 fun UpdateDialog(
-    state: AboutUiState,
+    state: UpdateUiState,
     onInstall: () -> Unit,
     onLater: () -> Unit,
     onOpenSettings: () -> Unit,
