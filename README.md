@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./media/icon.png" alt="Icône de JobCalender" width="120" height="120" />
+
 # JobCalender
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue?logo=kotlin&logoColor=fff&label=Kotlin&labelColor=333&color=7F52FF&style=flat)](https://kotlinlang.org)
