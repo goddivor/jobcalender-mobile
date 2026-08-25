@@ -6,7 +6,6 @@
     <string name="nav_applications">Candidatures</string>
     <string name="nav_settings">Réglages</string>
 
-    <string name="screen_settings_placeholder">Réglages</string>
 
     <!-- Statuses, in progression order -->
     <string name="status_draft">Brouillon</string>
@@ -106,6 +105,35 @@
     <string name="action_email">Écrire</string>
     <string name="action_call">Appeler</string>
     <string name="action_whatsapp">WhatsApp</string>
+
+    <!-- Settings -->
+    <string name="settings_section_sync">Synchronisation</string>
+    <string name="settings_last_sync">Dernière synchronisation\u00A0: %1$s</string>
+    <string name="settings_never_synced">Jamais synchronisé.</string>
+    <string name="settings_sync_now">Synchroniser maintenant</string>
+    <string name="settings_syncing">Synchronisation en cours\u2026</string>
+    <string name="settings_sync_on_launch">Synchroniser au lancement</string>
+    <string name="settings_sync_on_launch_sub">Seulement si la dernière synchronisation date de plus de 24\u00A0h</string>
+    <string name="settings_offline_note">Vos données restent enregistrées sur l\'appareil.</string>
+    <string name="settings_sync_unavailable">La synchronisation n\'est pas configurée dans cette version.</string>
+    <string name="settings_sync_pushed">Envoyé\u00A0: %1$d candidatures, %2$d événements.</string>
+    <string name="settings_sync_pulled">Reçu\u00A0: %1$d candidatures, %2$d événements.</string>
+    <string name="settings_sync_uptodate">Déjà à jour.</string>
+    <string name="settings_sync_failed">Échec de la synchronisation (%1$s). Réessayez plus tard.</string>
+
+    <string name="settings_section_appearance">Apparence</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_amoled">Noir intégral</string>
+    <string name="theme_follow_system">Suivre le système</string>
+    <string name="settings_follow_system_sub">Bascule entre clair et sombre avec Android</string>
+    <string name="settings_dynamic_color">Couleurs de l\'appareil</string>
+    <string name="settings_dynamic_color_sub">Material You. Les couleurs de statut ne changent pas.</string>
+
+    <string name="settings_section_data">Données</string>
+    <string name="settings_data_summary">%1$d candidatures, %2$d événements</string>
+    <string name="settings_section_about">À propos</string>
+    <string name="settings_version">Version %1$s</string>
 
     <!-- Writing -->
     <string name="action_add">Ajouter</string>

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -18,6 +20,22 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // The config key is compiled in, never committed: it lives in local.properties, which is
+        // gitignored. Without it the app simply has no sync, which is a working offline app.
+        val local = Properties().apply {
+            rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+        }
+        buildConfigField(
+            "String",
+            "SYNC_CONFIG_URL",
+            "\"${local.getProperty("SYNC_CONFIG_URL", "")}\"",
+        )
+        buildConfigField(
+            "String",
+            "SYNC_CONFIG_KEY",
+            "\"${local.getProperty("SYNC_CONFIG_KEY", "")}\"",
+        )
     }
 
     buildTypes {
@@ -33,6 +51,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -86,6 +105,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
