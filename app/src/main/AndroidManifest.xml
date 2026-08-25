@@ -4,6 +4,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- The app installs its own updates: distribution is by GitHub release, not by the Play Store. -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- Reminders arrive as notifications, which is the entire point: they have to reach the user
+         when the app is closed. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- A calendar app may declare USE_EXACT_ALARM, granted at install, where SCHEDULE_EXACT_ALARM
+         has been denied by default since Android 14. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".JobCalenderApp"
@@ -22,6 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".reminders.ReminderReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".reminders.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.core.content.FileProvider"

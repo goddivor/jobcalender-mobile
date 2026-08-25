@@ -15,6 +15,7 @@ import tg.goddivor.jobcalender.data.remote.SyncResult
 import tg.goddivor.jobcalender.data.remote.SyncSettings
 import tg.goddivor.jobcalender.data.repository.ApplicationRepository
 import tg.goddivor.jobcalender.data.repository.EventRepository
+import tg.goddivor.jobcalender.reminders.ReminderScheduler
 import tg.goddivor.jobcalender.ui.theme.ThemeMode
 import java.time.Instant
 import javax.inject.Inject
@@ -26,6 +27,10 @@ data class SettingsUiState(
     val syncOnLaunch: Boolean = true,
     val themeMode: ThemeMode = ThemeMode.FOLLOW_SYSTEM,
     val dynamicColor: Boolean = false,
+    val reminderDayBefore: Boolean = true,
+    val reminderHourBefore: Boolean = true,
+    val reminderClosing: Boolean = false,
+    val exactAlarmsAllowed: Boolean = true,
     val syncing: Boolean = false,
     val lastResult: SyncResult? = null,
     val applicationCount: Int = 0,
@@ -39,6 +44,7 @@ class SettingsViewModel @Inject constructor(
     private val syncEngine: SyncEngine,
     private val applications: ApplicationRepository,
     private val events: EventRepository,
+    private val reminders: ReminderScheduler,
 ) : ViewModel() {
 
     private val syncing = MutableStateFlow(false)
@@ -59,6 +65,10 @@ class SettingsViewModel @Inject constructor(
             themeMode = runCatching { ThemeMode.valueOf(stored.themeMode) }
                 .getOrDefault(ThemeMode.FOLLOW_SYSTEM),
             dynamicColor = stored.dynamicColor,
+            reminderDayBefore = stored.reminderDayBefore,
+            reminderHourBefore = stored.reminderHourBefore,
+            reminderClosing = stored.reminderClosing,
+            exactAlarmsAllowed = reminders.canScheduleExact(),
             syncing = busy,
             lastResult = result,
             applicationCount = count.first,
@@ -85,4 +95,19 @@ class SettingsViewModel @Inject constructor(
 
     fun setDynamicColor(enabled: Boolean) =
         viewModelScope.launch { settings.setDynamicColor(enabled) }
+
+    fun setReminderDayBefore(enabled: Boolean) = viewModelScope.launch {
+        settings.setReminderDayBefore(enabled)
+        reminders.reschedule()
+    }
+
+    fun setReminderHourBefore(enabled: Boolean) = viewModelScope.launch {
+        settings.setReminderHourBefore(enabled)
+        reminders.reschedule()
+    }
+
+    fun setReminderClosing(enabled: Boolean) = viewModelScope.launch {
+        settings.setReminderClosing(enabled)
+        reminders.reschedule()
+    }
 }

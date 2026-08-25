@@ -24,6 +24,7 @@ import tg.goddivor.jobcalender.ui.edit.ApplicationEditScreen
 import tg.goddivor.jobcalender.ui.edit.ApplicationEditViewModel
 import tg.goddivor.jobcalender.ui.edit.EventEditScreen
 import tg.goddivor.jobcalender.ui.edit.EventEditViewModel
+import tg.goddivor.jobcalender.ui.about.AboutScreen
 import tg.goddivor.jobcalender.ui.calendar.CalendarScreen
 import tg.goddivor.jobcalender.ui.settings.SettingsScreen
 
@@ -131,7 +132,10 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
             ) {
                 EventEditScreen(onDone = navController::popBackStack)
             }
-            composable(Destination.SETTINGS.route) { SettingsScreen() }
+            composable(Destination.SETTINGS.route) {
+                SettingsScreen(onOpenAbout = { navController.navigate(ABOUT_ROUTE) })
+            }
+            composable(ABOUT_ROUTE) { AboutScreen(onBack = navController::popBackStack) }
         }
     }
 }
@@ -139,3 +143,4 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
 private const val APPLICATION_DETAIL_ROUTE = "application"
 private const val APPLICATION_EDIT_ROUTE = "application-edit"
 private const val EVENT_EDIT_ROUTE = "event-edit"
+private const val ABOUT_ROUTE = "about"
