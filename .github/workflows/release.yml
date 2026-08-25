@@ -84,7 +84,10 @@ jobs:
       - name: Publish the release
         if: steps.guard.outputs.already == 'false'
         run: |
-          notes=$(git log --pretty=format:'- %s' "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD | head -30)
+          # Merge commits and version bumps are noise in a changelog the user actually reads.
+          notes=$(git log --no-merges --pretty=format:'- %s' \
+            "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD \
+            | grep -vE '^- chore: bump to ' | head -30)
           gh release create "${{ steps.version.outputs.tag }}" \
             "jobcalender-${{ steps.version.outputs.version }}.apk" \
             --title "JobCalender ${{ steps.version.outputs.version }}" \

@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tg.goddivor.jobcalender.R
 import tg.goddivor.jobcalender.ui.component.launch
+import tg.goddivor.jobcalender.updates.InstallState
 import tg.goddivor.jobcalender.ui.format.LOME
 import tg.goddivor.jobcalender.ui.format.hhmm
 import tg.goddivor.jobcalender.ui.format.short
@@ -55,6 +56,7 @@ fun AboutScreen(
     viewModel: AboutViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val update by viewModel.updateState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Scaffold(
@@ -105,14 +107,14 @@ fun AboutScreen(
             SectionLabel(stringResource(R.string.about_section_update))
             ActionRow(
                 title = stringResource(
-                    if (state.checking) R.string.about_checking else R.string.about_check,
+                    if (update.checking) R.string.about_checking else R.string.about_check,
                 ),
-                subtitle = if (state.checkedAndUpToDate) {
+                subtitle = if (update.checkedAndUpToDate) {
                     stringResource(R.string.about_up_to_date)
                 } else {
                     null
                 },
-                busy = state.checking,
+                busy = update.checking,
                 onClick = viewModel::checkForUpdate,
             )
             ActionRow(
@@ -148,8 +150,10 @@ fun AboutScreen(
     }
 
     UpdateDialog(
-        state = state,
-        onInstall = { if (state.install is tg.goddivor.jobcalender.updates.InstallState.ReadyToInstall) viewModel.install() else viewModel.download() },
+        state = update,
+        onInstall = {
+            if (update.install is InstallState.ReadyToInstall) viewModel.install() else viewModel.download()
+        },
         onLater = viewModel::dismissRelease,
         onOpenSettings = viewModel::openInstallSettings,
     )
