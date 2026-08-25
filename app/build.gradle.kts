@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -37,6 +38,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+// Exported schemas are committed so a future migration stays reviewable in a diff.
+// The extension is named `room3`, not `room`, and it is a project extension rather than a section
+// of the `android` block. Verified in RoomGradlePlugin's bytecode, 3.0.1.
+room3 {
+    schemaDirectory("$projectDir/schemas")
 }
 
 // Pinned because the machine's newest JVM (25) is a JRE with no compiler, and Gradle otherwise
@@ -76,7 +84,11 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
 
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
