@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
@@ -83,6 +84,8 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)

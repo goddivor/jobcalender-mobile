@@ -1,0 +1,405 @@
+{
+  "exported_at": "2026-08-25",
+  "candidat": {
+    "nom": "TODJRO Kossi Junior Patrice",
+    "ville": "Lome, Togo",
+    "email": "todjropatrice2002@gmail.com",
+    "tel": "+228 93 75 76 70"
+  },
+  "statuts": [
+    "brouillon",
+    "envoyee",
+    "accusee",
+    "lue",
+    "preselection",
+    "test",
+    "entretien",
+    "offre",
+    "refus",
+    "sans_reponse"
+  ],
+  "canaux": [
+    "email",
+    "formulaire_web",
+    "emploi_tg",
+    "linkedin",
+    "whatsapp",
+    "depot_direct"
+  ],
+  "candidatures": [
+    {
+      "employeur": "Institut Meridien",
+      "poste": "Assistant en Informatique",
+      "reference": "IM/2026/SI/07",
+      "canal": "email",
+      "envoyee_le": "2026-06-17",
+      "statut": "entretien",
+      "dossier": "MERIDIEN_AssistantInfo",
+      "contact": {
+        "nom": "A. Kodjo",
+        "email": "contact@exemple.invalid"
+      },
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-06-24"
+        },
+        {
+          "type": "preselection",
+          "date": "2026-08-24"
+        },
+        {
+          "type": "entretien",
+          "date": "2026-08-27",
+          "heure": "11:30",
+          "fuseau": "GMT",
+          "mode": "visio",
+          "lien": null,
+          "note": "lien a recevoir"
+        }
+      ]
+    },
+    {
+      "employeur": "Studio Lagune",
+      "poste": "Developpeur Frontend (Vue.js, Next.js)",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-08-24",
+      "statut": "entretien",
+      "dossier": "LAGUNE_Frontend",
+      "contact": {
+        "nom": "B. Amevor",
+        "email": "contact@exemple.invalid"
+      },
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-24"
+        },
+        {
+          "type": "entretien",
+          "date": "2026-09-23",
+          "heure": "21:30",
+          "duree_min": 20,
+          "fuseau": "Africa/Lome",
+          "mode": "google_meet",
+          "lien": "https://meet.example/demo",
+          "reference": "DEFD-VDDG-FEXS"
+        }
+      ]
+    },
+    {
+      "employeur": "Atelier Numerique",
+      "poste": "Developpeur Fullstack",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-07-03",
+      "statut": "test",
+      "dossier": "ATELIER_Fullstack",
+      "contact": {
+        "nom": "C. Sena",
+        "whatsapp": "+22890000000"
+      },
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-03"
+        },
+        {
+          "type": "test",
+          "date": "2026-08-24",
+          "heure": "10:00",
+          "mode": "presentiel",
+          "lieu": "Atelier Numerique, Lome"
+        },
+        {
+          "type": "entretien",
+          "date": "2026-08-24",
+          "heure": "10:00",
+          "mode": "presentiel",
+          "lieu": "Atelier Numerique, Lome"
+        }
+      ]
+    },
+    {
+      "employeur": "Atelier Numerique",
+      "poste": "Developpeur Frontend",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-07-03",
+      "statut": "test",
+      "dossier": "ATELIER_Frontend",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-03"
+        },
+        {
+          "type": "test",
+          "date": "2026-08-24"
+        }
+      ]
+    },
+    {
+      "employeur": "Atelier Numerique",
+      "poste": "Developpeur Rust / Backend",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-07-03",
+      "statut": "test",
+      "dossier": "ATELIER_Backend",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-03"
+        },
+        {
+          "type": "test",
+          "date": "2026-08-24"
+        }
+      ]
+    },
+    {
+      "employeur": "Cooperative Horizon",
+      "poste": "Poste IA",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-06-28",
+      "statut": "entretien",
+      "dossier": "HORIZON_Data",
+      "contact": {
+        "nom": "D. Mensah",
+        "whatsapp": "+22891000000"
+      },
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-06-28"
+        },
+        {
+          "type": "entretien",
+          "date": "2026-08-21",
+          "heure": "14:00",
+          "mode": "teams",
+          "lien": "https://teams.example/demo"
+        },
+        {
+          "type": "reunion",
+          "date": "2026-08-24",
+          "heure": "09:30",
+          "mode": "teams",
+          "statut": "manquee",
+          "note": "conflit avec le test ATD"
+        }
+      ]
+    },
+    {
+      "employeur": "Cooperative Horizon",
+      "poste": "AI Solutions Development and Proposal Specialist",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-08-19",
+      "statut": "accusee",
+      "dossier": "HORIZON_Analyste",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "employeur": "Groupe Sable",
+      "poste": "NODE.JS Developer",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-08-19",
+      "statut": "accusee",
+      "dossier": "Groupe Sable_NodeJS",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "employeur": "Groupe Sable",
+      "poste": "KOTLIN Developer",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-08-20",
+      "statut": "accusee",
+      "dossier": "Groupe Sable_Kotlin",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-20"
+        }
+      ]
+    },
+    {
+      "employeur": "Groupe Sable",
+      "poste": "JAVASCRIPT Developer",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-07-08",
+      "statut": "accusee",
+      "dossier": "Groupe Sable_JavaScript",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "employeur": "Groupe Sable",
+      "poste": "LARAVEL Developer",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-07-08",
+      "statut": "accusee",
+      "dossier": "Groupe Sable_Laravel",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "employeur": "Maison Baobab",
+      "poste": "Developpeur React / Next.js Debutant",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-07-17",
+      "statut": "accusee",
+      "dossier": "Maison Baobab_ReactNextJS_Debutant",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-17"
+        }
+      ]
+    },
+    {
+      "employeur": "Maison Baobab",
+      "poste": "Developpeur BDD Oracle / PostgreSQL Debutant",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-07-17",
+      "statut": "accusee",
+      "dossier": "Maison Baobab_BDD_Debutant",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-17"
+        }
+      ]
+    },
+    {
+      "employeur": "Editions Sahel",
+      "poste": "Developpeur JavaScript Full Stack",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-07-30",
+      "statut": "accusee",
+      "dossier": "SAHEL_JS",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-30"
+        }
+      ]
+    },
+    {
+      "employeur": "Ecole Kara",
+      "poste": "Formateur en Data et IA",
+      "canal": "emploi_tg",
+      "envoyee_le": "2026-06-28",
+      "statut": "lue",
+      "dossier": "Ecole Kara_Formateur",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-06-28"
+        },
+        {
+          "type": "lue",
+          "date": "2026-06-29"
+        }
+      ]
+    },
+    {
+      "employeur": "Ministere temoin",
+      "poste": "Analyste projet",
+      "canal": "email",
+      "envoyee_le": "2026-07-30",
+      "statut": "sans_reponse",
+      "dossier": "TEMOIN_Analyste",
+      "date_cloture": "2026-08-14"
+    },
+    {
+      "employeur": "Agence Ouest",
+      "poste": "Webmaster and Network Security",
+      "reference": "VN139WEB",
+      "canal": "email",
+      "envoyee_le": "2026-07-30",
+      "statut": "sans_reponse",
+      "dossier": "OUEST_Webmaster"
+    },
+    {
+      "employeur": "Paiements Atlantique",
+      "poste": "Ingenieur Developpement Logiciel (Full Stack)",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-07-02",
+      "statut": "sans_reponse",
+      "dossier": "ATLANTIQUE_Fullstack"
+    },
+    {
+      "employeur": "Paiements Atlantique",
+      "poste": "Charge Support Technique & Integration API",
+      "canal": "formulaire_web",
+      "envoyee_le": "2026-07-02",
+      "statut": "sans_reponse",
+      "dossier": "ATLANTIQUE_Support"
+    },
+    {
+      "employeur": "Cabinet Zenith",
+      "poste": "Administrateur de Bases de Donnees (DBA)",
+      "canal": "email",
+      "envoyee_le": "2026-06-27",
+      "statut": "sans_reponse",
+      "dossier": "ZENITH_DBA"
+    },
+    {
+      "employeur": "Cabinet Zenith",
+      "poste": "Developpeur Java Spring",
+      "canal": "email",
+      "envoyee_le": "2026-06-28",
+      "statut": "sans_reponse",
+      "dossier": "ZENITH_Java"
+    },
+    {
+      "employeur": "Studio Colline",
+      "poste": "Mission Developpeur Web & Mobile Full Stack",
+      "canal": "email",
+      "envoyee_le": "2026-06-28",
+      "statut": "sans_reponse",
+      "dossier": "COLLINE_FullStack"
+    },
+    {
+      "employeur": "Maison Baobab",
+      "poste": "Developpeur Next.js",
+      "canal": "email",
+      "envoyee_le": "2026-06-28",
+      "statut": "sans_reponse",
+      "dossier": "Maison Baobab_NextJS"
+    },
+    {
+      "employeur": "Societe Lumiere",
+      "poste": "Developpeur Fullstack Symfony",
+      "canal": "linkedin",
+      "statut": "brouillon",
+      "dossier": "LUMIERE_Symfony",
+      "note": "dossier pret, envoi bloque : LinkedIn uniquement"
+    },
+    {
+      "employeur": "Programme Alizes",
+      "poste": "Digital, AI and Innovation Internship",
+      "canal": "formulaire_web",
+      "statut": "brouillon",
+      "dossier": "ALIZES_Stage",
+      "date_cloture": "2026-10-01",
+      "note": "dossier pret, formulaire Oracle entame, bloque sur declarations personnelles"
+    }
+  ]
+}
