@@ -59,10 +59,13 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
             }
         },
     ) { innerPadding ->
+        // Only the bottom bar's inset is consumed here. Each screen carries its own top app bar and
+        // applies the status-bar inset itself; taking innerPadding whole would count it twice and
+        // leave a dead band above every title.
         NavHost(
             navController = navController,
             startDestination = Destination.CALENDAR.route,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         ) {
             composable(Destination.CALENDAR.route) { CalendarScreen() }
             composable(Destination.APPLICATIONS.route) {
