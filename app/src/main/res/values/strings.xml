@@ -7,6 +7,107 @@
     <string name="nav_settings">Réglages</string>
 
     <string name="screen_calendar_placeholder">Calendrier</string>
-    <string name="screen_applications_placeholder">Candidatures</string>
     <string name="screen_settings_placeholder">Réglages</string>
+
+    <!-- Statuses, in progression order -->
+    <string name="status_draft">Brouillon</string>
+    <string name="status_sent">Envoyée</string>
+    <string name="status_acknowledged">Accusée</string>
+    <string name="status_read">Lue</string>
+    <string name="status_shortlisted">Présélection</string>
+    <string name="status_test">Test</string>
+    <string name="status_interview">Entretien</string>
+    <string name="status_offer">Offre</string>
+    <string name="status_rejected">Refus</string>
+    <string name="status_no_reply">Sans réponse</string>
+
+    <!-- Channels -->
+    <string name="channel_email">E-mail</string>
+    <string name="channel_web_form">Formulaire web</string>
+    <string name="channel_emploi_tg">Emploi.tg</string>
+    <string name="channel_linkedin">LinkedIn</string>
+    <string name="channel_whatsapp">WhatsApp</string>
+    <string name="channel_direct">Dépôt direct</string>
+
+    <!-- Event types -->
+    <string name="event_type_acknowledgement">Accusé de réception</string>
+    <string name="event_type_read">Dossier lu</string>
+    <string name="event_type_shortlist">Présélection</string>
+    <string name="event_type_test">Test technique</string>
+    <string name="event_type_interview">Entretien</string>
+    <string name="event_type_meeting">Réunion</string>
+    <string name="event_type_deadline">Échéance</string>
+    <string name="event_type_follow_up">Relance</string>
+    <string name="event_type_rejection">Refus</string>
+    <string name="event_type_offer">Offre</string>
+
+    <!-- Event modes -->
+    <string name="event_mode_onsite">Présentiel</string>
+    <string name="event_mode_video">Visioconférence</string>
+    <string name="event_mode_teams">Teams</string>
+    <string name="event_mode_google_meet">Google Meet</string>
+    <string name="event_mode_phone">Téléphone</string>
+
+    <!-- Event outcomes -->
+    <string name="event_outcome_pending">À venir</string>
+    <string name="event_outcome_done">Fait</string>
+    <string name="event_outcome_missed">Manqué</string>
+    <string name="event_outcome_cancelled">Annulé</string>
+
+    <!-- Missing values are written, never blanked -->
+    <string name="event_time_unknown">heure à confirmer</string>
+    <string name="event_time_none">sans heure</string>
+    <string name="event_link_missing">lien non reçu</string>
+
+    <!-- Applications list -->
+    <string name="applications_search_hint">Rechercher un employeur ou un poste</string>
+    <string name="applications_filter_all">Tout</string>
+    <string name="applications_empty_filter">Aucune candidature ne correspond à ce filtre.</string>
+    <string name="applications_empty_search">Aucune candidature ne correspond à cette recherche.</string>
+    <string name="applications_sort">Trier</string>
+    <string name="application_never_sent">jamais envoyée</string>
+    <string name="application_closing_on">clôture le %1$s</string>
+    <string name="application_closing_past">clôture dépassée</string>
+
+    <!-- Application detail -->
+    <string name="detail_back">Retour</string>
+    <string name="detail_section_timeline">Parcours</string>
+    <string name="detail_section_contact">Contact</string>
+    <string name="detail_section_tracking">Suivi</string>
+    <string name="detail_contact_name">Nom</string>
+    <string name="detail_contact_email">E-mail</string>
+    <string name="detail_contact_phone">Téléphone</string>
+    <string name="detail_channel">Canal</string>
+    <string name="detail_sent_on">Envoyée le</string>
+    <string name="detail_closing">Clôture</string>
+    <string name="detail_closing_none">non communiquée</string>
+    <string name="detail_folder">Dossier</string>
+    <string name="detail_folder_hint">sur l\'ordinateur, dans le dossier jobing</string>
+    <string name="detail_note">Note</string>
+    <string name="detail_reference_none">aucune référence</string>
+    <string name="detail_no_contact">Aucun contact enregistré.</string>
+    <string name="detail_no_phone">Aucun numéro de téléphone enregistré.</string>
+    <string name="detail_link_not_received">Le lien de la visioconférence n\'a pas encore été reçu.</string>
+    <string name="detail_not_found">Cette candidature n\'existe plus.</string>
+    <string name="timeline_sent">Candidature envoyée</string>
+    <string name="timeline_sent_via">par %1$s</string>
+
+    <!-- Actions -->
+    <string name="action_open_link">Ouvrir le lien</string>
+    <string name="action_email">Écrire</string>
+    <string name="action_call">Appeler</string>
+    <string name="action_whatsapp">WhatsApp</string>
+
+    <!-- Relative days, used by the calendar header and the timeline -->
+    <string name="relative_today">aujourd\'hui</string>
+    <string name="relative_tomorrow">demain</string>
+    <string name="relative_yesterday">hier</string>
+    <plurals name="relative_in_days">
+        <item quantity="one">dans %1$d jour</item>
+        <item quantity="other">dans %1$d jours</item>
+    </plurals>
+    <plurals name="relative_days_ago">
+        <item quantity="one">il y a %1$d jour</item>
+        <item quantity="other">il y a %1$d jours</item>
+    </plurals>
 </resources>

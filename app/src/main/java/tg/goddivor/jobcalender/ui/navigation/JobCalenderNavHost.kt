@@ -14,7 +14,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import tg.goddivor.jobcalender.ui.applications.ApplicationDetailScreen
+import tg.goddivor.jobcalender.ui.applications.ApplicationDetailViewModel
 import tg.goddivor.jobcalender.ui.applications.ApplicationsScreen
 import tg.goddivor.jobcalender.ui.calendar.CalendarScreen
 import tg.goddivor.jobcalender.ui.settings.SettingsScreen
@@ -24,8 +28,12 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 
+    // The bottom bar belongs to the three destinations only: a detail screen opens over them.
+    val showBottomBar = Destination.entries.any { it.route == currentRoute }
+
     Scaffold(
         bottomBar = {
+            if (!showBottomBar) return@Scaffold
             NavigationBar {
                 Destination.entries.forEach { destination ->
                     NavigationBarItem(
@@ -57,8 +65,22 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
             modifier = Modifier.padding(innerPadding),
         ) {
             composable(Destination.CALENDAR.route) { CalendarScreen() }
-            composable(Destination.APPLICATIONS.route) { ApplicationsScreen() }
+            composable(Destination.APPLICATIONS.route) {
+                ApplicationsScreen(
+                    onOpenApplication = { id -> navController.navigate("$APPLICATION_DETAIL_ROUTE/$id") },
+                )
+            }
+            composable(
+                route = "$APPLICATION_DETAIL_ROUTE/{${ApplicationDetailViewModel.ARG_ID}}",
+                arguments = listOf(
+                    navArgument(ApplicationDetailViewModel.ARG_ID) { type = NavType.StringType },
+                ),
+            ) {
+                ApplicationDetailScreen(onBack = navController::popBackStack)
+            }
             composable(Destination.SETTINGS.route) { SettingsScreen() }
         }
     }
 }
+
+private const val APPLICATION_DETAIL_ROUTE = "application"

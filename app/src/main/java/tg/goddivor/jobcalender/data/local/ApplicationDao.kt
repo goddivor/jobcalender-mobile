@@ -18,6 +18,11 @@ interface ApplicationDao {
     @Query("SELECT * FROM applications WHERE status = :status ORDER BY employer, position")
     fun byStatus(status: Status): Flow<List<ApplicationEntity>>
 
+    /** Every list screen needs the events too, to know when an application last moved. */
+    @Transaction
+    @Query("SELECT * FROM applications")
+    fun allWithEvents(): Flow<List<ApplicationWithEventsEntity>>
+
     @Transaction
     @Query("SELECT * FROM applications WHERE id = :id")
     fun withEvents(id: String): Flow<ApplicationWithEventsEntity?>

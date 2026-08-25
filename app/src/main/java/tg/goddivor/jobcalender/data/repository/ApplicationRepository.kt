@@ -24,6 +24,9 @@ class ApplicationRepository @Inject constructor(
     fun byStatus(status: Status): Flow<List<Application>> =
         dao.byStatus(status).map { rows -> rows.map { it.toDomain() } }
 
+    fun allWithEvents(): Flow<List<ApplicationWithEvents>> =
+        dao.allWithEvents().map { rows -> rows.map { it.toDomain() } }
+
     fun withEvents(id: String): Flow<ApplicationWithEvents?> =
         dao.withEvents(id).map { it?.toDomain() }
 
