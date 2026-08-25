@@ -6,7 +6,6 @@
     <string name="nav_applications">Candidatures</string>
     <string name="nav_settings">Réglages</string>
 
-    <string name="screen_calendar_placeholder">Calendrier</string>
     <string name="screen_settings_placeholder">Réglages</string>
 
     <!-- Statuses, in progression order -->
@@ -58,6 +57,15 @@
     <string name="event_time_unknown">heure à confirmer</string>
     <string name="event_time_none">sans heure</string>
     <string name="event_link_missing">lien non reçu</string>
+
+    <!-- Calendar -->
+    <string name="calendar_today">Aujourd\'hui</string>
+    <string name="calendar_previous_month">Mois précédent</string>
+    <string name="calendar_next_month">Mois suivant</string>
+    <string name="calendar_next_appointment">Prochain rendez-vous</string>
+    <string name="calendar_no_next">Aucun rendez-vous à venir.</string>
+    <string name="calendar_empty_day">Aucun événement ce jour.</string>
+    <string name="calendar_conflict_banner">Conflit d\'horaire\u00A0: %1$d événements se chevauchent.</string>
 
     <!-- Applications list -->
     <string name="applications_search_hint">Rechercher un employeur ou un poste</string>

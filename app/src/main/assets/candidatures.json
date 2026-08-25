@@ -92,7 +92,7 @@
       "poste": "Developpeur Fullstack",
       "canal": "formulaire_web",
       "envoyee_le": "2026-07-03",
-      "statut": "test",
+      "statut": "sans_reponse",
       "dossier": "ATELIER_Fullstack",
       "contact": {
         "nom": "C. Sena",
@@ -102,20 +102,6 @@
         {
           "type": "accuse",
           "date": "2026-07-03"
-        },
-        {
-          "type": "test",
-          "date": "2026-08-24",
-          "heure": "10:00",
-          "mode": "presentiel",
-          "lieu": "Atelier Numerique, Lome"
-        },
-        {
-          "type": "entretien",
-          "date": "2026-08-24",
-          "heure": "10:00",
-          "mode": "presentiel",
-          "lieu": "Atelier Numerique, Lome"
         }
       ]
     },
@@ -124,16 +110,12 @@
       "poste": "Developpeur Frontend",
       "canal": "formulaire_web",
       "envoyee_le": "2026-07-03",
-      "statut": "test",
+      "statut": "sans_reponse",
       "dossier": "ATELIER_Frontend",
       "evenements": [
         {
           "type": "accuse",
           "date": "2026-07-03"
-        },
-        {
-          "type": "test",
-          "date": "2026-08-24"
         }
       ]
     },
@@ -151,7 +133,10 @@
         },
         {
           "type": "test",
-          "date": "2026-08-24"
+          "date": "2026-08-24",
+          "heure": "10:00",
+          "mode": "presentiel",
+          "lieu": "Atelier Numerique, Lome"
         }
       ]
     },

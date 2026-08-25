@@ -60,8 +60,8 @@ class SeedImporterTest {
         assertEquals(25, report.applications)
         assertEquals(25, applications.count())
         assertEquals("two closing dates become deadline events", 2, report.derivedDeadlines)
-        assertEquals("25 events in the file plus 2 derived deadlines", 27, report.events)
-        assertEquals(27, events.count())
+        assertEquals("22 events in the file plus 2 derived deadlines", 24, report.events)
+        assertEquals(24, events.count())
     }
 
     @Test
@@ -70,7 +70,7 @@ class SeedImporterTest {
         importer.import()
 
         assertEquals(25, applications.count())
-        assertEquals(27, events.count())
+        assertEquals(24, events.count())
     }
 
     @Test

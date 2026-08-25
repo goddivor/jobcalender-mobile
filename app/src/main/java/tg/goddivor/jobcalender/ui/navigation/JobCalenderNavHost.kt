@@ -67,7 +67,11 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
             startDestination = Destination.CALENDAR.route,
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         ) {
-            composable(Destination.CALENDAR.route) { CalendarScreen() }
+            composable(Destination.CALENDAR.route) {
+                CalendarScreen(
+                    onOpenApplication = { id -> navController.navigate("$APPLICATION_DETAIL_ROUTE/$id") },
+                )
+            }
             composable(Destination.APPLICATIONS.route) {
                 ApplicationsScreen(
                     onOpenApplication = { id -> navController.navigate("$APPLICATION_DETAIL_ROUTE/$id") },
