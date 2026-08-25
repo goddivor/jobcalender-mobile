@@ -38,8 +38,35 @@ android {
         )
     }
 
+    // Release signing reads the CI environment first, then local.properties. Neither the keystore
+    // nor its password is ever committed: an unsigned release APK cannot be installed, so the
+    // signing config simply stays absent when the material is not there, and assembleRelease then
+    // produces an unsigned artifact rather than failing in a confusing way.
+    val keystoreFile = (System.getenv("KEYSTORE_PATH")
+        ?: Properties().apply {
+            rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+        }.getProperty("KEYSTORE_PATH"))?.let(::file)
+
+    signingConfigs {
+        if (keystoreFile?.exists() == true) {
+            create("release") {
+                storeFile = keystoreFile
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                    ?: Properties().apply {
+                        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+                    }.getProperty("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS") ?: "jobcalender"
+                keyPassword = System.getenv("KEY_PASSWORD")
+                    ?: Properties().apply {
+                        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+                    }.getProperty("KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

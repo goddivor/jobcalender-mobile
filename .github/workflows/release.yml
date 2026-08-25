@@ -1,0 +1,93 @@
+# Publishes a signed APK whenever main moves, which only happens through a merged pull request.
+# The app's in-app updater reads exactly what this workflow produces: the tag, the release notes and
+# the attached APK.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read the version from the build file
+        id: version
+        run: |
+          version=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts | head -1)
+          if [ -z "$version" ]; then
+            echo "versionName not found in app/build.gradle.kts" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Stop if this version was already released
+        id: guard
+        run: |
+          if gh release view "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "already=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::${{ steps.version.outputs.tag }} already exists. Bump versionName to publish."
+          else
+            echo "already=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-java@v4
+        if: steps.guard.outputs.already == 'false'
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.guard.outputs.already == 'false'
+
+      - name: Restore the signing key
+        if: steps.guard.outputs.already == 'false'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/jobcalender.jks"
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/jobcalender.jks" >> "$GITHUB_ENV"
+
+      - name: Restore the sync configuration
+        if: steps.guard.outputs.already == 'false'
+        run: |
+          {
+            echo "SYNC_CONFIG_URL=${{ secrets.SYNC_CONFIG_URL }}"
+            echo "SYNC_CONFIG_KEY=${{ secrets.SYNC_CONFIG_KEY }}"
+          } >> local.properties
+
+      - name: Build the signed APK
+        if: steps.guard.outputs.already == 'false'
+        run: ./gradlew assembleRelease --no-daemon
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: jobcalender
+          KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
+      - name: Name the artifact after its version
+        if: steps.guard.outputs.already == 'false'
+        run: |
+          src=$(find app/build/outputs/apk/release -name '*.apk' | head -1)
+          if [ -z "$src" ]; then echo "no APK produced" >&2; exit 1; fi
+          cp "$src" "jobcalender-${{ steps.version.outputs.version }}.apk"
+
+      - name: Publish the release
+        if: steps.guard.outputs.already == 'false'
+        run: |
+          notes=$(git log --pretty=format:'- %s' "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD | head -30)
+          gh release create "${{ steps.version.outputs.tag }}" \
+            "jobcalender-${{ steps.version.outputs.version }}.apk" \
+            --title "JobCalender ${{ steps.version.outputs.version }}" \
+            --notes "${notes:-Mise à jour de JobCalender.}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

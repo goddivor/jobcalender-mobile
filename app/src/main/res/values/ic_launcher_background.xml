@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The launcher background, taken from the icon's own body gradient (#FFFFFF to #E8EAEF).
+      It is a launcher resource rather than a theme token: the system draws it outside the app,
+      where MaterialTheme does not reach. The white "C" is a hole in the foreground, so this is the
+      colour that shows through it.
+    -->
+    <color name="ic_launcher_background">#F3F4F7</color>
+</resources>
