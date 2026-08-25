@@ -4,8 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Mirrors reference/candidatures.json exactly, French field names included. The file is the owner's
- * real export and is never edited to suit the code: the code bends to the file.
+ * Mirrors candidatures.json exactly, French field names included. The file is never edited to suit
+ * the code: the code bends to the file.
+ *
+ * The asset shipped here is a demonstration set, because this repository is public. The owner's real
+ * applications live in the private context repository and on the device, and reach a fresh install
+ * through the first sync, which runs before seeding for exactly that reason.
  */
 @Serializable
 data class SeedFile(

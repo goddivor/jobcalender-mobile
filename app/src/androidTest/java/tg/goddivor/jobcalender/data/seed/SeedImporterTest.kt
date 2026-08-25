@@ -54,7 +54,7 @@ class SeedImporterTest {
     }
 
     @Test
-    fun importsTheTwentyFiveRealApplications() = runTest {
+    fun importsTheTwentyFiveSeededApplications() = runTest {
         val report = importer.import()
 
         assertEquals(25, report.applications)
@@ -82,17 +82,17 @@ class SeedImporterTest {
     }
 
     @Test
-    fun keepsTheCcdgInterviewExactlyAsExported() = runTest {
+    fun keepsAnInterviewExactlyAsExported() = runTest {
         importer.import()
 
-        val ccdg = applications.findByFolder("MERIDIEN_AssistantInfo")
-        assertNotNull(ccdg)
-        assertEquals("Institut Meridien", ccdg!!.employer)
-        assertEquals(Status.INTERVIEW, ccdg.status)
-        assertEquals("IM/2026/SI/07", ccdg.reference)
-        assertEquals("contact@exemple.invalid", ccdg.contactEmail)
+        val entry = applications.findByFolder("MERIDIEN_AssistantInfo")
+        assertNotNull(entry)
+        assertEquals("Institut Meridien", entry!!.employer)
+        assertEquals(Status.INTERVIEW, entry.status)
+        assertEquals("IM/2026/SI/07", entry.reference)
+        assertEquals("recrutement@institut-meridien.example", entry.contactEmail)
 
-        val interview = events.forApplication(ccdg.id).first()
+        val interview = events.forApplication(entry.id).first()
             .single { it.type == EventType.INTERVIEW }
         assertEquals(LocalDate.of(2026, 8, 27), interview.date)
         assertEquals(LocalTime.of(11, 30), interview.time)
@@ -101,7 +101,7 @@ class SeedImporterTest {
     }
 
     @Test
-    fun derivesADeadlineFromTheUndpClosingDate() = runTest {
+    fun derivesADeadlineFromAClosingDate() = runTest {
         importer.import()
 
         val undp = applications.findByFolder("ALIZES_Stage")
@@ -115,13 +115,13 @@ class SeedImporterTest {
     }
 
     @Test
-    fun keepsTheWhatsAppOnlyContactOfAgenceTogoDigital() = runTest {
+    fun keepsAWhatsAppOnlyContact() = runTest {
         importer.import()
 
-        val atd = applications.findByFolder("ATELIER_Fullstack")
-        assertNotNull(atd)
-        assertEquals("+22890000000", atd!!.contactPhone)
-        assertNull("that contact gave no email", atd.contactEmail)
+        val entry = applications.findByFolder("ATELIER_Backend")
+        assertNotNull(entry)
+        assertEquals("+22890000000", entry!!.contactPhone)
+        assertNull("that contact gave no email", entry.contactEmail)
     }
 
     @Test

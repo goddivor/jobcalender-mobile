@@ -1,11 +1,6 @@
 {
   "exported_at": "2026-08-25",
-  "candidat": {
-    "nom": "TODJRO Kossi Junior Patrice",
-    "ville": "Lome, Togo",
-    "email": "todjropatrice2002@gmail.com",
-    "tel": "+228 93 75 76 70"
-  },
+  "note": "Jeu de demonstration. Les vraies candidatures vivent dans le depot prive et sur l'appareil.",
   "statuts": [
     "brouillon",
     "envoyee",
@@ -30,14 +25,14 @@
     {
       "employeur": "Institut Meridien",
       "poste": "Assistant en Informatique",
-      "reference": "IM/2026/SI/07",
       "canal": "email",
-      "envoyee_le": "2026-06-17",
       "statut": "entretien",
       "dossier": "MERIDIEN_AssistantInfo",
+      "reference": "IM/2026/SI/07",
+      "envoyee_le": "2026-06-17",
       "contact": {
         "nom": "A. Kodjo",
-        "email": "contact@exemple.invalid"
+        "email": "recrutement@institut-meridien.example"
       },
       "evenements": [
         {
@@ -61,14 +56,14 @@
     },
     {
       "employeur": "Studio Lagune",
-      "poste": "Developpeur Frontend (Vue.js, Next.js)",
+      "poste": "Developpeur Frontend",
       "canal": "formulaire_web",
-      "envoyee_le": "2026-08-24",
       "statut": "entretien",
       "dossier": "LAGUNE_Frontend",
+      "envoyee_le": "2026-08-24",
       "contact": {
         "nom": "B. Amevor",
-        "email": "contact@exemple.invalid"
+        "email": "jobs@studio-lagune.example"
       },
       "evenements": [
         {
@@ -82,50 +77,21 @@
           "duree_min": 20,
           "fuseau": "Africa/Lome",
           "mode": "google_meet",
-          "lien": "https://meet.example/demo",
-          "reference": "DEFD-VDDG-FEXS"
+          "lien": "https://meet.example/demo"
         }
       ]
     },
     {
       "employeur": "Atelier Numerique",
-      "poste": "Developpeur Fullstack",
+      "poste": "Developpeur Backend",
       "canal": "formulaire_web",
+      "statut": "test",
+      "dossier": "ATELIER_Backend",
       "envoyee_le": "2026-07-03",
-      "statut": "sans_reponse",
-      "dossier": "ATELIER_Fullstack",
       "contact": {
         "nom": "C. Sena",
         "whatsapp": "+22890000000"
       },
-      "evenements": [
-        {
-          "type": "accuse",
-          "date": "2026-07-03"
-        }
-      ]
-    },
-    {
-      "employeur": "Atelier Numerique",
-      "poste": "Developpeur Frontend",
-      "canal": "formulaire_web",
-      "envoyee_le": "2026-07-03",
-      "statut": "sans_reponse",
-      "dossier": "ATELIER_Frontend",
-      "evenements": [
-        {
-          "type": "accuse",
-          "date": "2026-07-03"
-        }
-      ]
-    },
-    {
-      "employeur": "Atelier Numerique",
-      "poste": "Developpeur Rust / Backend",
-      "canal": "formulaire_web",
-      "envoyee_le": "2026-07-03",
-      "statut": "test",
-      "dossier": "ATELIER_Backend",
       "evenements": [
         {
           "type": "accuse",
@@ -141,12 +107,26 @@
       ]
     },
     {
-      "employeur": "Cooperative Horizon",
-      "poste": "Poste IA",
+      "employeur": "Atelier Numerique",
+      "poste": "Developpeur Fullstack",
       "canal": "formulaire_web",
-      "envoyee_le": "2026-06-28",
+      "statut": "sans_reponse",
+      "dossier": "ATELIER_Fullstack",
+      "envoyee_le": "2026-07-03",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-07-03"
+        }
+      ]
+    },
+    {
+      "employeur": "Cooperative Horizon",
+      "poste": "Poste Data",
+      "canal": "formulaire_web",
       "statut": "entretien",
       "dossier": "HORIZON_Data",
+      "envoyee_le": "2026-06-28",
       "contact": {
         "nom": "D. Mensah",
         "whatsapp": "+22891000000"
@@ -169,31 +149,17 @@
           "heure": "09:30",
           "mode": "teams",
           "statut": "manquee",
-          "note": "conflit avec le test ATD"
+          "note": "conflit avec le test"
         }
       ]
     },
     {
       "employeur": "Cooperative Horizon",
-      "poste": "AI Solutions Development and Proposal Specialist",
+      "poste": "Analyste",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-08-19",
       "statut": "accusee",
       "dossier": "HORIZON_Analyste",
-      "evenements": [
-        {
-          "type": "accuse",
-          "date": "2026-08-19"
-        }
-      ]
-    },
-    {
-      "employeur": "Groupe Sable",
-      "poste": "NODE.JS Developer",
-      "canal": "emploi_tg",
       "envoyee_le": "2026-08-19",
-      "statut": "accusee",
-      "dossier": "Groupe Sable_NodeJS",
       "evenements": [
         {
           "type": "accuse",
@@ -203,11 +169,25 @@
     },
     {
       "employeur": "Groupe Sable",
-      "poste": "KOTLIN Developer",
+      "poste": "Developpeur Node",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-08-20",
       "statut": "accusee",
-      "dossier": "Groupe Sable_Kotlin",
+      "dossier": "SABLE_Node",
+      "envoyee_le": "2026-08-19",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "employeur": "Groupe Sable",
+      "poste": "Developpeur Kotlin",
+      "canal": "emploi_tg",
+      "statut": "accusee",
+      "dossier": "SABLE_Kotlin",
+      "envoyee_le": "2026-08-20",
       "evenements": [
         {
           "type": "accuse",
@@ -217,25 +197,11 @@
     },
     {
       "employeur": "Groupe Sable",
-      "poste": "JAVASCRIPT Developer",
+      "poste": "Developpeur Web",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-07-08",
       "statut": "accusee",
-      "dossier": "Groupe Sable_JavaScript",
-      "evenements": [
-        {
-          "type": "accuse",
-          "date": "2026-07-08"
-        }
-      ]
-    },
-    {
-      "employeur": "Groupe Sable",
-      "poste": "LARAVEL Developer",
-      "canal": "emploi_tg",
+      "dossier": "SABLE_Web",
       "envoyee_le": "2026-07-08",
-      "statut": "accusee",
-      "dossier": "Groupe Sable_Laravel",
       "evenements": [
         {
           "type": "accuse",
@@ -245,11 +211,11 @@
     },
     {
       "employeur": "Maison Baobab",
-      "poste": "Developpeur React / Next.js Debutant",
+      "poste": "Developpeur Junior",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-07-17",
       "statut": "accusee",
-      "dossier": "Maison Baobab_ReactNextJS_Debutant",
+      "dossier": "BAOBAB_Junior",
+      "envoyee_le": "2026-07-17",
       "evenements": [
         {
           "type": "accuse",
@@ -259,11 +225,11 @@
     },
     {
       "employeur": "Maison Baobab",
-      "poste": "Developpeur BDD Oracle / PostgreSQL Debutant",
+      "poste": "Administrateur BDD",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-07-17",
       "statut": "accusee",
-      "dossier": "Maison Baobab_BDD_Debutant",
+      "dossier": "BAOBAB_BDD",
+      "envoyee_le": "2026-07-17",
       "evenements": [
         {
           "type": "accuse",
@@ -273,11 +239,11 @@
     },
     {
       "employeur": "Editions Sahel",
-      "poste": "Developpeur JavaScript Full Stack",
+      "poste": "Developpeur JavaScript",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-07-30",
       "statut": "accusee",
       "dossier": "SAHEL_JS",
+      "envoyee_le": "2026-07-30",
       "evenements": [
         {
           "type": "accuse",
@@ -287,11 +253,11 @@
     },
     {
       "employeur": "Ecole Kara",
-      "poste": "Formateur en Data et IA",
+      "poste": "Formateur Data",
       "canal": "emploi_tg",
-      "envoyee_le": "2026-06-28",
       "statut": "lue",
-      "dossier": "Ecole Kara_Formateur",
+      "dossier": "KARA_Formateur",
+      "envoyee_le": "2026-06-28",
       "evenements": [
         {
           "type": "accuse",
@@ -307,84 +273,122 @@
       "employeur": "Ministere temoin",
       "poste": "Analyste projet",
       "canal": "email",
-      "envoyee_le": "2026-07-30",
       "statut": "sans_reponse",
       "dossier": "TEMOIN_Analyste",
-      "date_cloture": "2026-08-14"
+      "envoyee_le": "2026-07-30",
+      "date_cloture": "2026-08-14",
+      "evenements": []
     },
     {
       "employeur": "Agence Ouest",
-      "poste": "Webmaster and Network Security",
-      "reference": "VN139WEB",
+      "poste": "Webmaster",
       "canal": "email",
+      "statut": "sans_reponse",
+      "dossier": "OUEST_Webmaster",
+      "reference": "VN000WEB",
       "envoyee_le": "2026-07-30",
-      "statut": "sans_reponse",
-      "dossier": "OUEST_Webmaster"
+      "evenements": []
     },
     {
       "employeur": "Paiements Atlantique",
-      "poste": "Ingenieur Developpement Logiciel (Full Stack)",
+      "poste": "Ingenieur Fullstack",
       "canal": "formulaire_web",
-      "envoyee_le": "2026-07-02",
       "statut": "sans_reponse",
-      "dossier": "ATLANTIQUE_Fullstack"
+      "dossier": "ATLANTIQUE_Fullstack",
+      "envoyee_le": "2026-07-02",
+      "evenements": []
     },
     {
       "employeur": "Paiements Atlantique",
-      "poste": "Charge Support Technique & Integration API",
+      "poste": "Support technique",
       "canal": "formulaire_web",
-      "envoyee_le": "2026-07-02",
       "statut": "sans_reponse",
-      "dossier": "ATLANTIQUE_Support"
+      "dossier": "ATLANTIQUE_Support",
+      "envoyee_le": "2026-07-02",
+      "evenements": []
     },
     {
       "employeur": "Cabinet Zenith",
-      "poste": "Administrateur de Bases de Donnees (DBA)",
+      "poste": "Administrateur de bases",
       "canal": "email",
+      "statut": "sans_reponse",
+      "dossier": "ZENITH_DBA",
       "envoyee_le": "2026-06-27",
-      "statut": "sans_reponse",
-      "dossier": "ZENITH_DBA"
+      "evenements": []
     },
     {
       "employeur": "Cabinet Zenith",
-      "poste": "Developpeur Java Spring",
+      "poste": "Developpeur Java",
       "canal": "email",
-      "envoyee_le": "2026-06-28",
       "statut": "sans_reponse",
-      "dossier": "ZENITH_Java"
+      "dossier": "ZENITH_Java",
+      "envoyee_le": "2026-06-28",
+      "evenements": []
     },
     {
       "employeur": "Studio Colline",
-      "poste": "Mission Developpeur Web & Mobile Full Stack",
+      "poste": "Developpeur Web et Mobile",
       "canal": "email",
-      "envoyee_le": "2026-06-28",
       "statut": "sans_reponse",
-      "dossier": "COLLINE_FullStack"
+      "dossier": "COLLINE_FullStack",
+      "envoyee_le": "2026-06-28",
+      "evenements": []
     },
     {
       "employeur": "Maison Baobab",
       "poste": "Developpeur Next.js",
       "canal": "email",
-      "envoyee_le": "2026-06-28",
       "statut": "sans_reponse",
-      "dossier": "Maison Baobab_NextJS"
+      "dossier": "BAOBAB_Next",
+      "envoyee_le": "2026-06-28",
+      "evenements": []
     },
     {
       "employeur": "Societe Lumiere",
-      "poste": "Developpeur Fullstack Symfony",
+      "poste": "Developpeur Symfony",
       "canal": "linkedin",
       "statut": "brouillon",
       "dossier": "LUMIERE_Symfony",
-      "note": "dossier pret, envoi bloque : LinkedIn uniquement"
+      "note": "dossier pret, envoi bloque",
+      "evenements": []
     },
     {
       "employeur": "Programme Alizes",
-      "poste": "Digital, AI and Innovation Internship",
+      "poste": "Stage IA et innovation",
       "canal": "formulaire_web",
       "statut": "brouillon",
       "dossier": "ALIZES_Stage",
       "date_cloture": "2026-10-01",
-      "note": "dossier pret, formulaire Oracle entame, bloque sur declarations personnelles"
+      "note": "formulaire entame",
+      "evenements": []
+    },
+    {
+      "employeur": "Fabrique Tisserand",
+      "poste": "Developpeur Rust",
+      "canal": "emploi_tg",
+      "statut": "accusee",
+      "dossier": "TISSERAND_Rust",
+      "envoyee_le": "2026-08-19",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "employeur": "Fabrique Tisserand",
+      "poste": "Developpeur Go",
+      "canal": "emploi_tg",
+      "statut": "accusee",
+      "dossier": "TISSERAND_Go",
+      "envoyee_le": "2026-08-20",
+      "evenements": [
+        {
+          "type": "accuse",
+          "date": "2026-08-20"
+        }
+      ]
     }
   ]
 }
