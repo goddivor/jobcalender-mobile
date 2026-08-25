@@ -20,6 +20,10 @@ import androidx.navigation.navArgument
 import tg.goddivor.jobcalender.ui.applications.ApplicationDetailScreen
 import tg.goddivor.jobcalender.ui.applications.ApplicationDetailViewModel
 import tg.goddivor.jobcalender.ui.applications.ApplicationsScreen
+import tg.goddivor.jobcalender.ui.edit.ApplicationEditScreen
+import tg.goddivor.jobcalender.ui.edit.ApplicationEditViewModel
+import tg.goddivor.jobcalender.ui.edit.EventEditScreen
+import tg.goddivor.jobcalender.ui.edit.EventEditViewModel
 import tg.goddivor.jobcalender.ui.calendar.CalendarScreen
 import tg.goddivor.jobcalender.ui.settings.SettingsScreen
 
@@ -75,6 +79,9 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
             composable(Destination.APPLICATIONS.route) {
                 ApplicationsScreen(
                     onOpenApplication = { id -> navController.navigate("$APPLICATION_DETAIL_ROUTE/$id") },
+                    onAddApplication = {
+                        navController.navigate("$APPLICATION_EDIT_ROUTE/${ApplicationEditViewModel.NEW}")
+                    },
                 )
             }
             composable(
@@ -83,7 +90,46 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
                     navArgument(ApplicationDetailViewModel.ARG_ID) { type = NavType.StringType },
                 ),
             ) {
-                ApplicationDetailScreen(onBack = navController::popBackStack)
+                ApplicationDetailScreen(
+                    onBack = navController::popBackStack,
+                    onEditApplication = { id -> navController.navigate("$APPLICATION_EDIT_ROUTE/$id") },
+                    onAddEvent = { applicationId, type ->
+                        val suffix = type?.name ?: EventEditViewModel.NONE
+                        navController.navigate(
+                            "$EVENT_EDIT_ROUTE/$applicationId/${EventEditViewModel.NEW}/$suffix",
+                        )
+                    },
+                    onEditEvent = { applicationId, eventId ->
+                        navController.navigate(
+                            "$EVENT_EDIT_ROUTE/$applicationId/$eventId/${EventEditViewModel.NONE}",
+                        )
+                    },
+                )
+            }
+            composable(
+                route = "$APPLICATION_EDIT_ROUTE/{${ApplicationEditViewModel.ARG_ID}}",
+                arguments = listOf(
+                    navArgument(ApplicationEditViewModel.ARG_ID) { type = NavType.StringType },
+                ),
+            ) {
+                ApplicationEditScreen(
+                    onDone = navController::popBackStack,
+                    // A deleted application must not leave its own detail screen on the stack.
+                    onDeleted = {
+                        navController.popBackStack(Destination.APPLICATIONS.route, inclusive = false)
+                    },
+                )
+            }
+            composable(
+                route = "$EVENT_EDIT_ROUTE/{${EventEditViewModel.ARG_APPLICATION_ID}}/" +
+                    "{${EventEditViewModel.ARG_EVENT_ID}}/{${EventEditViewModel.ARG_TYPE}}",
+                arguments = listOf(
+                    navArgument(EventEditViewModel.ARG_APPLICATION_ID) { type = NavType.StringType },
+                    navArgument(EventEditViewModel.ARG_EVENT_ID) { type = NavType.StringType },
+                    navArgument(EventEditViewModel.ARG_TYPE) { type = NavType.StringType },
+                ),
+            ) {
+                EventEditScreen(onDone = navController::popBackStack)
             }
             composable(Destination.SETTINGS.route) { SettingsScreen() }
         }
@@ -91,3 +137,5 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
 }
 
 private const val APPLICATION_DETAIL_ROUTE = "application"
+private const val APPLICATION_EDIT_ROUTE = "application-edit"
+private const val EVENT_EDIT_ROUTE = "event-edit"

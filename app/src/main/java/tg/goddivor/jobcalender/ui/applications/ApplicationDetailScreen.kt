@@ -3,9 +3,11 @@ package tg.goddivor.jobcalender.ui.applications
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,8 +20,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -30,6 +37,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +53,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tg.goddivor.jobcalender.R
 import tg.goddivor.jobcalender.domain.model.EventOutcome
+import tg.goddivor.jobcalender.domain.model.EventType
+import tg.goddivor.jobcalender.domain.model.Status
 import tg.goddivor.jobcalender.ui.component.ContactActions
 import tg.goddivor.jobcalender.ui.component.Pill
 import tg.goddivor.jobcalender.ui.component.StatusPill
@@ -57,10 +69,14 @@ import tg.goddivor.jobcalender.ui.theme.JobCalenderTheme
 @Composable
 fun ApplicationDetailScreen(
     onBack: () -> Unit,
+    onEditApplication: (String) -> Unit,
+    onAddEvent: (String, EventType?) -> Unit,
+    onEditEvent: (String, String) -> Unit,
     viewModel: ApplicationDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    var pickingStatus by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -72,6 +88,13 @@ fun ApplicationDetailScreen(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.detail_back),
                         )
+                    }
+                },
+                actions = {
+                    state.application?.let { current ->
+                        IconButton(onClick = { onEditApplication(current.id) }) {
+                            Icon(Icons.Filled.Edit, stringResource(R.string.action_edit))
+                        }
                     }
                 },
             )
@@ -137,9 +160,55 @@ fun ApplicationDetailScreen(
                 )
             }
 
+            // Both buttons share one height and one type size, and neither wraps: side by side,
+            // a two-line label makes one button visibly taller than the other.
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                OutlinedButton(
+                    onClick = { onAddEvent(application.id, null) },
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    modifier = Modifier.weight(1f).height(46.dp),
+                ) {
+                    Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(17.dp))
+                    Text(
+                        text = stringResource(R.string.action_add_event),
+                        style = MaterialTheme.typography.labelMedium,
+                        maxLines = 1,
+                        modifier = Modifier.padding(start = 5.dp),
+                    )
+                }
+                OutlinedButton(
+                    onClick = { pickingStatus = true },
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    modifier = Modifier.weight(1f).height(46.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.action_change_status),
+                        style = MaterialTheme.typography.labelMedium,
+                        maxLines = 1,
+                    )
+                }
+            }
+
             SectionLabel(stringResource(R.string.detail_section_timeline))
+            if (state.timeline.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.detail_no_event),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                )
+            }
             state.timeline.forEachIndexed { index, node ->
-                TimelineRow(node = node, isLast = index == state.timeline.lastIndex)
+                TimelineRow(
+                    node = node,
+                    isLast = index == state.timeline.lastIndex,
+                    onClick = (node as? TimelineNode.Real)?.let { real ->
+                        { onEditEvent(application.id, real.event.id) }
+                    },
+                )
             }
 
             SectionLabel(stringResource(R.string.detail_section_contact))
@@ -189,6 +258,60 @@ fun ApplicationDetailScreen(
             Box(Modifier.height(28.dp))
         }
     }
+
+    if (pickingStatus) {
+        StatusPicker(
+            current = state.application?.status ?: Status.DRAFT,
+            onPick = { status ->
+                pickingStatus = false
+                viewModel.changeStatus(status) { type ->
+                    state.application?.let { onAddEvent(it.id, type) }
+                }
+            },
+            onDismiss = { pickingStatus = false },
+        )
+    }
+}
+
+@Composable
+private fun StatusPicker(
+    current: Status,
+    onPick: (Status) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.action_change_status)) },
+        text = {
+            Column {
+                // Every status is offered, in progression order, with none disabled: a real
+                // application jumped from acknowledged straight to test, and the app must not
+                // pretend that path does not exist.
+                Status.entries.forEach { status ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onPick(status) }
+                            .padding(vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        StatusPill(status)
+                        if (status == current) {
+                            Text(
+                                text = "•",
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.titleMedium,
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_close)) }
+        },
+    )
 }
 
 @Composable
@@ -233,8 +356,13 @@ private fun Fact(label: String, value: String, muted: Boolean = false, monospace
 }
 
 @Composable
-private fun TimelineRow(node: TimelineNode, isLast: Boolean) {
-    Row(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)) {
+private fun TimelineRow(node: TimelineNode, isLast: Boolean, onClick: (() -> Unit)?) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .padding(start = 16.dp, end = 16.dp),
+    ) {
         Column(
             modifier = Modifier.width(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

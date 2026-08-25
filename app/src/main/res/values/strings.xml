@@ -94,6 +94,7 @@
     <string name="detail_note">Note</string>
     <string name="detail_reference_none">aucune référence</string>
     <string name="detail_no_contact">Aucun contact enregistré.</string>
+    <string name="detail_no_event">Aucun événement pour l\'instant.</string>
     <string name="detail_no_phone">Aucun numéro de téléphone enregistré.</string>
     <string name="detail_link_not_received">Le lien de la visioconférence n\'a pas encore été reçu.</string>
     <string name="detail_not_found">Cette candidature n\'existe plus.</string>
@@ -105,6 +106,67 @@
     <string name="action_email">Écrire</string>
     <string name="action_call">Appeler</string>
     <string name="action_whatsapp">WhatsApp</string>
+
+    <!-- Writing -->
+    <string name="action_add">Ajouter</string>
+    <string name="action_add_application">Ajouter une candidature</string>
+    <string name="action_add_event">Ajouter un événement</string>
+    <string name="action_change_status">Changer le statut</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_close">Fermer</string>
+
+    <string name="edit_application_new">Nouvelle candidature</string>
+    <string name="edit_application_title">Modifier la candidature</string>
+    <string name="edit_employer">Employeur</string>
+    <string name="edit_position">Poste</string>
+    <string name="edit_reference">Référence</string>
+    <string name="edit_channel">Canal</string>
+    <string name="edit_status">Statut</string>
+    <string name="edit_sent_at">Date d\'envoi</string>
+    <string name="edit_closing_date">Date de clôture</string>
+    <string name="edit_folder">Dossier sur l\'ordinateur</string>
+    <string name="edit_contact_name">Nom du contact</string>
+    <string name="edit_contact_email">E-mail du contact</string>
+    <string name="edit_contact_phone">Téléphone ou WhatsApp</string>
+    <string name="edit_note">Note</string>
+    <string name="edit_optional">facultatif</string>
+    <string name="edit_required_employer">L\'employeur est obligatoire.</string>
+    <string name="edit_required_position">Le poste est obligatoire.</string>
+    <string name="edit_no_date">aucune date</string>
+    <string name="edit_pick_date">Choisir une date</string>
+    <string name="edit_pick_time">Choisir une heure</string>
+    <string name="edit_clear">Effacer</string>
+
+    <string name="edit_event_new">Nouvel événement</string>
+    <string name="edit_event_title">Modifier l\'événement</string>
+    <string name="edit_event_type">Type</string>
+    <string name="edit_event_date">Date</string>
+    <string name="edit_event_time">Heure</string>
+    <string name="edit_event_duration">Durée en minutes</string>
+    <string name="edit_event_mode">Mode</string>
+    <string name="edit_event_location">Lieu</string>
+    <string name="edit_event_link">Lien</string>
+    <string name="edit_event_outcome">Issue</string>
+    <string name="edit_event_none">aucun</string>
+
+    <string name="delete_application_title">Supprimer cette candidature\u00A0?</string>
+    <plurals name="delete_application_body">
+        <item quantity="zero">Cette action est définitive.</item>
+        <item quantity="one">Son événement sera supprimé avec elle. Cette action est définitive.</item>
+        <item quantity="other">Ses %1$d événements seront supprimés avec elle. Cette action est définitive.</item>
+    </plurals>
+    <string name="delete_event_title">Supprimer cet événement\u00A0?</string>
+    <string name="delete_event_body">Cette action est définitive.</string>
+    <string name="discard_title">Abandonner les modifications\u00A0?</string>
+    <string name="discard_body">Ce qui a été saisi ne sera pas enregistré.</string>
+    <string name="discard_confirm">Abandonner</string>
+    <string name="discard_keep">Continuer la saisie</string>
+
+    <string name="status_change_logged">Le changement a été ajouté au parcours.</string>
+    <string name="status_needs_date">Ce statut demande une date\u00A0: renseignez l\'événement.</string>
 
     <!-- Relative days, used by the calendar header and the timeline -->
     <string name="relative_today">aujourd\'hui</string>
