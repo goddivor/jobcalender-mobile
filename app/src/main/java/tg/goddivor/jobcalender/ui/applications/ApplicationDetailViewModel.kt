@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tg.goddivor.jobcalender.data.repository.ApplicationRepository
+import tg.goddivor.jobcalender.data.remote.changedFields
 import tg.goddivor.jobcalender.data.repository.EventRepository
 import tg.goddivor.jobcalender.domain.model.Application
 import tg.goddivor.jobcalender.domain.model.Channel
@@ -87,7 +88,8 @@ class ApplicationDetailViewModel @Inject constructor(
     fun changeStatus(status: Status, onNeedsDate: (EventType) -> Unit) {
         viewModelScope.launch {
             val current = repository.withEvents(applicationId).first()?.application ?: return@launch
-            repository.upsert(current.copy(status = status, updatedAt = Instant.now()))
+            val updated = current.copy(status = status, updatedAt = Instant.now())
+            repository.update(updated, changedFields(current, updated))
 
             loggedEventTypeFor(status)?.let { type ->
                 events.upsert(

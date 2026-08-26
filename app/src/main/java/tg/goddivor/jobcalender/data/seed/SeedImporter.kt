@@ -94,8 +94,8 @@ class SeedImporter @Inject constructor(
             }
         }
 
-        applications.upsertAll(parsedApplications)
-        events.upsertAll(parsedEvents)
+        applications.upsertAllLocally(parsedApplications)
+        events.upsertAllLocally(parsedEvents)
 
         return ImportReport(
             applications = parsedApplications.size,

@@ -53,6 +53,9 @@ interface ApplicationDao {
     @Query("SELECT * FROM applications WHERE folder = :folder LIMIT 1")
     suspend fun findByFolder(folder: String): ApplicationEntity?
 
+    @Query("DELETE FROM applications")
+    suspend fun deleteAll()
+
     @Upsert
     suspend fun upsert(application: ApplicationEntity)
 

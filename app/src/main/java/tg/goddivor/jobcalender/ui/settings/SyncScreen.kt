@@ -233,22 +233,28 @@ private fun ConfiguredSection(state: SyncUiState, viewModel: SyncViewModel) {
 @Composable
 private fun SyncResultLine(result: SyncResult) {
     val text = when (result) {
-        is SyncResult.Pushed ->
-            stringResource(R.string.settings_sync_pushed, result.applications, result.events)
-        is SyncResult.Pulled ->
+        is SyncResult.Pulled -> if (result.sent > 0) {
+            stringResource(
+                R.string.settings_sync_pulled_and_sent,
+                result.applications,
+                result.events,
+                result.sent,
+            )
+        } else {
             stringResource(R.string.settings_sync_pulled, result.applications, result.events)
-        SyncResult.AlreadyUpToDate -> stringResource(R.string.settings_sync_uptodate)
+        }
+        is SyncResult.Blocked -> stringResource(R.string.settings_sync_blocked, result.pending)
+        SyncResult.RemoteEmpty -> stringResource(R.string.settings_sync_remote_empty)
         SyncResult.NotConfigured -> stringResource(R.string.settings_sync_unavailable)
         is SyncResult.Failed -> stringResource(R.string.settings_sync_failed, result.reason)
     }
+    val wrong = result is SyncResult.Failed ||
+        result is SyncResult.Blocked ||
+        result is SyncResult.RemoteEmpty
     Text(
         text = text,
         style = MaterialTheme.typography.bodySmall,
-        color = if (result is SyncResult.Failed) {
-            JobCalenderTheme.semantic.danger
-        } else {
-            JobCalenderTheme.semantic.success
-        },
+        color = if (wrong) JobCalenderTheme.semantic.danger else JobCalenderTheme.semantic.success,
         modifier = Modifier.padding(horizontal = ROW_PADDING, vertical = 2.dp),
     )
 }

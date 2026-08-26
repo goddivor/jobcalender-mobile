@@ -79,3 +79,19 @@ data class StatusCountRow(
     val status: Status,
     val count: Int,
 )
+
+/**
+ * A local write waiting to reach the server. The app is the reader of this base, not its owner: an
+ * edit made here travels as a single document so it can never replace what the jobing MCP wrote.
+ * The row survives a restart, which is what makes an offline edit reach the server later.
+ */
+@Entity(tableName = "pending_writes")
+data class PendingWriteEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val verb: String,
+    val applicationId: String,
+    val eventId: String? = null,
+    val body: String? = null,
+    val queuedAt: Instant,
+    val attempts: Int = 0,
+)
