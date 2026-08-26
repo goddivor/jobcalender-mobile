@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.stateIn
 import tg.goddivor.jobcalender.data.remote.SyncSettings
 import tg.goddivor.jobcalender.updates.InstallState
 import tg.goddivor.jobcalender.updates.UpdateFlow
+import tg.goddivor.jobcalender.ui.theme.AppPalette
 import tg.goddivor.jobcalender.ui.theme.ThemeMode
 import javax.inject.Inject
 
 data class ThemeState(
-    val mode: ThemeMode = ThemeMode.FOLLOW_SYSTEM,
-    val dynamicColor: Boolean = false,
+    val mode: ThemeMode = ThemeMode.SYSTEM,
+    val palette: AppPalette = AppPalette.DEFAULT,
+    val amoled: Boolean = false,
 )
 
 @HiltViewModel
@@ -43,9 +45,16 @@ class MainViewModel @Inject constructor(
         .map { stored ->
             ThemeState(
                 mode = runCatching { ThemeMode.valueOf(stored.themeMode) }
-                    .getOrDefault(ThemeMode.FOLLOW_SYSTEM),
-                dynamicColor = stored.dynamicColor,
+                    .getOrDefault(ThemeMode.SYSTEM),
+                palette = runCatching { AppPalette.valueOf(stored.palette) }
+                    .getOrDefault(AppPalette.DEFAULT),
+                amoled = stored.amoled,
             )
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, ThemeState())
+
+    /** Flips once the stored theme has actually been read, which is what the splash waits for. */
+    val ready = settings.state
+        .map { true }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 }

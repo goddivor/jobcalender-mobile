@@ -3,7 +3,6 @@ package tg.goddivor.jobcalender.data.remote
 import android.os.Build
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
-import tg.goddivor.jobcalender.BuildConfig
 import tg.goddivor.jobcalender.data.repository.ApplicationRepository
 import tg.goddivor.jobcalender.data.repository.EventRepository
 import java.time.Instant
@@ -16,6 +15,14 @@ sealed interface SyncResult {
     data object AlreadyUpToDate : SyncResult
     data object NotConfigured : SyncResult
     data class Failed(val reason: String) : SyncResult
+}
+
+/** Why fetching the configuration ended the way it did, so the form can say which one happened. */
+sealed interface ConfigResult {
+    data object Success : ConfigResult
+    data object InvalidKey : ConfigResult
+    data object Offline : ConfigResult
+    data class ServerError(val code: Int) : ConfigResult
 }
 
 /**
@@ -97,19 +104,34 @@ class SyncEngine @Inject constructor(
         )
     }
 
-    /** Fetches the URL and token once, with the key compiled into the APK, then remembers them. */
-    private suspend fun ensureConfigured(): SyncState? {
-        val current = settings.state.first()
-        if (current.isConfigured) return current
-
-        val url = BuildConfig.SYNC_CONFIG_URL
-        val key = BuildConfig.SYNC_CONFIG_KEY
-        if (url.isBlank() || key.isBlank()) return null
-
-        val config = api.config("$url/api/config", key)
-        settings.store(config.apiUrl, config.token)
-        return settings.state.first()
+    /**
+     * Exchanges a typed key for the address and the bearer token. The key is not kept: it opens
+     * `/api/config` once and nothing else, and refusing to store it is what keeps a stolen device
+     * or a decompiled APK from re-issuing a token.
+     */
+    suspend fun configure(serverUrl: String, key: String): ConfigResult {
+        val url = serverUrl.trim().trimEnd('/')
+        settings.setServerUrl(url)
+        return runCatching { api.config("$url/api/config", key.trim()) }
+            .fold(
+                onSuccess = { config ->
+                    settings.store(config.apiUrl, config.token)
+                    ConfigResult.Success
+                },
+                onFailure = { error ->
+                    when {
+                        error !is HttpException -> ConfigResult.Offline
+                        error.code() == UNAUTHORIZED || error.code() == FORBIDDEN ->
+                            ConfigResult.InvalidKey
+                        else -> ConfigResult.ServerError(error.code())
+                    }
+                },
+            )
     }
+
+    /** Nothing is fetched on the app's own initiative any more: the user configures, or there is no sync. */
+    private suspend fun ensureConfigured(): SyncState? =
+        settings.state.first().takeIf { it.isConfigured }
 
     private fun Throwable.readable(): String = when (this) {
         is HttpException -> "HTTP ${code()}"
@@ -117,6 +139,8 @@ class SyncEngine @Inject constructor(
     }
 
     private companion object {
+        const val UNAUTHORIZED = 401
+        const val FORBIDDEN = 403
         const val NOT_FOUND = 404
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- One value has to serve both dark and pure black: the system picks by resource qualifier,
+         before the process can read the stored preference. The exit fade absorbs the difference. -->
+    <color name="splash_background">#111318</color>
+</resources>

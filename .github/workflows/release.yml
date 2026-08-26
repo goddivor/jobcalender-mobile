@@ -58,13 +58,12 @@ jobs:
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/jobcalender.jks"
           echo "KEYSTORE_PATH=$RUNNER_TEMP/jobcalender.jks" >> "$GITHUB_ENV"
 
-      - name: Restore the sync configuration
+      - name: Restore the sync address
         if: steps.guard.outputs.already == 'false'
         run: |
-          {
-            echo "SYNC_CONFIG_URL=${{ secrets.SYNC_CONFIG_URL }}"
-            echo "SYNC_CONFIG_KEY=${{ secrets.SYNC_CONFIG_KEY }}"
-          } >> local.properties
+          # The address only. The key that opens /api/config is typed by the user: a published APK
+          # can be taken apart, so anything compiled into it is effectively published too.
+          echo "SYNC_CONFIG_URL=${{ secrets.SYNC_CONFIG_URL }}" >> local.properties
 
       - name: Build the signed APK
         if: steps.guard.outputs.already == 'false'
@@ -84,10 +83,16 @@ jobs:
       - name: Publish the release
         if: steps.guard.outputs.already == 'false'
         run: |
-          # Merge commits and version bumps are noise in a changelog the user actually reads.
-          notes=$(git log --no-merges --pretty=format:'- %s' \
-            "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD \
-            | grep -vE '^- chore: bump to ' | head -30)
+          # The What's new screen reads these notes, and everything the user reads is in French.
+          # A hand-written file wins; commit subjects are only the fallback when none was left.
+          notes_file="release-notes/${{ steps.version.outputs.version }}.md"
+          if [ -f "$notes_file" ]; then
+            notes=$(cat "$notes_file")
+          else
+            notes=$(git log --no-merges --pretty=format:'- %s' \
+              "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD \
+              | grep -vE '^- chore: bump to ' | head -30)
+          fi
           gh release create "${{ steps.version.outputs.tag }}" \
             "jobcalender-${{ steps.version.outputs.version }}.apk" \
             --title "JobCalender ${{ steps.version.outputs.version }}" \

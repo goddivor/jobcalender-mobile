@@ -25,6 +25,7 @@ private data class GithubRelease(
     val name: String = "",
     val body: String = "",
     @SerialName("html_url") val htmlUrl: String = "",
+    @SerialName("published_at") val publishedAt: String? = null,
     val assets: List<GithubAsset> = emptyList(),
 )
 
@@ -45,6 +46,13 @@ data class ReleaseInfo(
     val isNewerThanInstalled: Boolean
         get() = compareVersions(version, BuildConfig.VERSION_NAME) > 0
 }
+
+/** One published version, as the What's new screen lists it. */
+data class ReleaseNote(
+    val version: String,
+    val publishedAt: Instant?,
+    val notes: String,
+)
 
 /**
  * Checks GitHub Releases for a newer APK. Never throws: offline, rate-limited or malformed, it
@@ -77,6 +85,29 @@ class ReleaseChecker @Inject constructor(
     suspend fun dismiss(version: String) {
         context.updateStore.edit { it[DISMISSED] = version }
     }
+
+    /**
+     * Every published version, newest first. Not cached in preferences: the screen that reads it is
+     * opened on purpose, and an empty list is a legitimate answer when there is no network.
+     */
+    suspend fun history(): List<ReleaseNote> = runCatching {
+        val request = Request.Builder()
+            .url(RELEASES_URL)
+            .header("Accept", "application/vnd.github+json")
+            .build()
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) return emptyList()
+            val body = response.body?.string().orEmpty()
+            if (body.isBlank()) return emptyList()
+            json.decodeFromString<List<GithubRelease>>(body).map { release ->
+                ReleaseNote(
+                    version = release.tagName.removePrefix("v"),
+                    publishedAt = release.publishedAt?.let { runCatching { Instant.parse(it) }.getOrNull() },
+                    notes = markdownToText(release.body),
+                )
+            }
+        }
+    }.getOrDefault(emptyList())
 
     private suspend fun cached(): ReleaseInfo? {
         val stored = context.updateStore.data.first()
@@ -129,6 +160,7 @@ class ReleaseChecker @Inject constructor(
     private companion object {
         const val REPOSITORY = "goddivor/jobcalender-mobile"
         const val LATEST_RELEASE_URL = "https://api.github.com/repos/$REPOSITORY/releases/latest"
+        const val RELEASES_URL = "https://api.github.com/repos/$REPOSITORY/releases?per_page=30"
         const val RELEASES_PAGE = "https://github.com/$REPOSITORY/releases"
         val CACHE_LIFETIME: Duration = Duration.ofHours(6)
 

@@ -25,8 +25,15 @@ import tg.goddivor.jobcalender.ui.edit.ApplicationEditViewModel
 import tg.goddivor.jobcalender.ui.edit.EventEditScreen
 import tg.goddivor.jobcalender.ui.edit.EventEditViewModel
 import tg.goddivor.jobcalender.ui.about.AboutScreen
+import tg.goddivor.jobcalender.ui.about.LicenseTextScreen
+import tg.goddivor.jobcalender.ui.about.LicensesScreen
+import tg.goddivor.jobcalender.ui.about.WhatsNewScreen
 import tg.goddivor.jobcalender.ui.calendar.CalendarScreen
+import tg.goddivor.jobcalender.ui.settings.AppearanceScreen
+import tg.goddivor.jobcalender.ui.settings.DataScreen
+import tg.goddivor.jobcalender.ui.settings.RemindersScreen
 import tg.goddivor.jobcalender.ui.settings.SettingsScreen
+import tg.goddivor.jobcalender.ui.settings.SyncScreen
 
 @Composable
 fun JobCalenderNavHost(navController: NavHostController = rememberNavController()) {
@@ -133,9 +140,33 @@ fun JobCalenderNavHost(navController: NavHostController = rememberNavController(
                 EventEditScreen(onDone = navController::popBackStack)
             }
             composable(Destination.SETTINGS.route) {
-                SettingsScreen(onOpenAbout = { navController.navigate(ABOUT_ROUTE) })
+                SettingsScreen(
+                    onOpenAppearance = { navController.navigate(APPEARANCE_ROUTE) },
+                    onOpenSync = { navController.navigate(SYNC_ROUTE) },
+                    onOpenReminders = { navController.navigate(REMINDERS_ROUTE) },
+                    onOpenData = { navController.navigate(DATA_ROUTE) },
+                    onOpenAbout = { navController.navigate(ABOUT_ROUTE) },
+                )
             }
-            composable(ABOUT_ROUTE) { AboutScreen(onBack = navController::popBackStack) }
+            composable(APPEARANCE_ROUTE) { AppearanceScreen(onBack = navController::popBackStack) }
+            composable(SYNC_ROUTE) { SyncScreen(onBack = navController::popBackStack) }
+            composable(REMINDERS_ROUTE) { RemindersScreen(onBack = navController::popBackStack) }
+            composable(DATA_ROUTE) { DataScreen(onBack = navController::popBackStack) }
+            composable(ABOUT_ROUTE) {
+                AboutScreen(
+                    onBack = navController::popBackStack,
+                    onOpenWhatsNew = { navController.navigate(WHATS_NEW_ROUTE) },
+                    onOpenLicense = { navController.navigate(LICENSES_ROUTE) },
+                )
+            }
+            composable(WHATS_NEW_ROUTE) { WhatsNewScreen(onClose = navController::popBackStack) }
+            composable(LICENSES_ROUTE) {
+                LicensesScreen(
+                    onBack = navController::popBackStack,
+                    onOpenLicense = { navController.navigate(LICENSE_TEXT_ROUTE) },
+                )
+            }
+            composable(LICENSE_TEXT_ROUTE) { LicenseTextScreen(onBack = navController::popBackStack) }
         }
     }
 }
@@ -144,3 +175,10 @@ private const val APPLICATION_DETAIL_ROUTE = "application"
 private const val APPLICATION_EDIT_ROUTE = "application-edit"
 private const val EVENT_EDIT_ROUTE = "event-edit"
 private const val ABOUT_ROUTE = "about"
+private const val APPEARANCE_ROUTE = "appearance"
+private const val SYNC_ROUTE = "sync"
+private const val REMINDERS_ROUTE = "reminders"
+private const val DATA_ROUTE = "data"
+private const val WHATS_NEW_ROUTE = "whats-new"
+private const val LICENSES_ROUTE = "licenses"
+private const val LICENSE_TEXT_ROUTE = "license-text"

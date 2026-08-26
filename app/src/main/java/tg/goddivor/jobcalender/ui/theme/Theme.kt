@@ -2,6 +2,7 @@ package tg.goddivor.jobcalender.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -12,7 +13,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 
-enum class ThemeMode { FOLLOW_SYSTEM, LIGHT, DARK, AMOLED }
+/** What decides between light and dark. Pure black is not one of these: it modifies dark. */
+enum class ThemeMode { SYSTEM, LIGHT, DARK }
+
+/** Where the colours come from. Dynamic is only offered from Android 12 onwards. */
+enum class AppPalette { DEFAULT, DYNAMIC }
 
 private val LightScheme = lightColorScheme(
     primary = BluePrimaryLight,
@@ -52,6 +57,14 @@ private val DarkScheme = darkColorScheme(
     errorContainer = DangerContainerDark,
 )
 
+/** Pure black applies to any dark scheme, the wallpaper's included. */
+private fun ColorScheme.blackened(): ColorScheme = copy(
+    background = SurfaceAmoled,
+    surface = SurfaceAmoled,
+    surfaceContainer = SurfaceContainerAmoled,
+    surfaceContainerHigh = SurfaceContainerHighAmoled,
+)
+
 private val AmoledScheme = DarkScheme.copy(
     background = SurfaceAmoled,
     surface = SurfaceAmoled,
@@ -61,31 +74,38 @@ private val AmoledScheme = DarkScheme.copy(
     outlineVariant = OutlineVariantAmoled,
 )
 
+/** True when this device can extract a palette from the wallpaper. */
+val dynamicColorAvailable: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
 @Composable
 fun JobCalenderTheme(
-    themeMode: ThemeMode = ThemeMode.FOLLOW_SYSTEM,
-    useDynamicColor: Boolean = false,
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    palette: AppPalette = AppPalette.DEFAULT,
+    amoled: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val dark = when (themeMode) {
-        ThemeMode.FOLLOW_SYSTEM -> isSystemInDarkTheme()
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
         ThemeMode.LIGHT -> false
-        ThemeMode.DARK, ThemeMode.AMOLED -> true
+        ThemeMode.DARK -> true
     }
+    val pureBlack = dark && amoled
 
     val scheme = when {
         // Dynamic colour reaches the accent only; the four semantic colours below never follow it.
-        useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        palette == AppPalette.DYNAMIC && dynamicColorAvailable -> {
             val context = LocalContext.current
-            if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            val dynamic =
+                if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (pureBlack) dynamic.blackened() else dynamic
         }
-        themeMode == ThemeMode.AMOLED -> AmoledScheme
+        pureBlack -> AmoledScheme
         dark -> DarkScheme
         else -> LightScheme
     }
 
     val semantic = when {
-        themeMode == ThemeMode.AMOLED -> AmoledSemanticColors
+        pureBlack -> AmoledSemanticColors
         dark -> DarkSemanticColors
         else -> LightSemanticColors
     }
