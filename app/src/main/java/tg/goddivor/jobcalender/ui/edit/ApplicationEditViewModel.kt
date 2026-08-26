@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tg.goddivor.jobcalender.data.repository.ApplicationRepository
+import tg.goddivor.jobcalender.data.remote.changedFields
 import tg.goddivor.jobcalender.data.repository.EventRepository
 import tg.goddivor.jobcalender.domain.model.Application
 import tg.goddivor.jobcalender.domain.model.Channel
@@ -93,7 +94,12 @@ class ApplicationEditViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            repository.upsert(form.toApplication(original))
+            val saved = form.toApplication(original)
+            val before = original
+            // A new application is created whole; an edit sends only what it changed, so a field
+            // the MCP filled in the meantime is left where it is.
+            if (before == null) repository.create(saved)
+            else repository.update(saved, changedFields(before, saved))
             _state.update { it.copy(saved = true, dirty = false) }
         }
     }

@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.map
 import tg.goddivor.jobcalender.data.local.ApplicationDao
 import tg.goddivor.jobcalender.data.local.toDomain
 import tg.goddivor.jobcalender.data.local.toEntity
+import kotlinx.serialization.json.JsonObject
+import tg.goddivor.jobcalender.data.remote.SyncOutbox
 import tg.goddivor.jobcalender.domain.model.Application
 import tg.goddivor.jobcalender.domain.model.ApplicationWithEvents
 import tg.goddivor.jobcalender.domain.model.Status
@@ -17,6 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class ApplicationRepository @Inject constructor(
     private val dao: ApplicationDao,
+    private val outbox: SyncOutbox,
 ) {
     fun all(): Flow<List<Application>> =
         dao.all().map { rows -> rows.map { it.toDomain() } }
@@ -41,10 +44,26 @@ class ApplicationRepository @Inject constructor(
     /** The folder name is the join key the jobing MCP will use later. */
     suspend fun findByFolder(folder: String): Application? = dao.findByFolder(folder)?.toDomain()
 
-    suspend fun upsert(application: Application) = dao.upsert(application.toEntity())
+    /** A manual edit: written locally, then queued as a single document for the server. */
+    suspend fun create(application: Application) {
+        dao.upsert(application.toEntity())
+        outbox.queueApplicationCreated(application)
+    }
 
-    suspend fun upsertAll(applications: List<Application>) =
+    /** Only what changed leaves the device: the rest of the document belongs to whoever wrote it. */
+    suspend fun update(application: Application, changes: JsonObject) {
+        dao.upsert(application.toEntity())
+        outbox.queueApplicationChanged(application.id, changes)
+    }
+
+    /** Seed and pull only: filling the local copy must never send it back. */
+    suspend fun upsertAllLocally(applications: List<Application>) =
         dao.upsertAll(applications.map { it.toEntity() })
 
-    suspend fun delete(application: Application) = dao.delete(application.toEntity())
+    suspend fun delete(application: Application) {
+        dao.delete(application.toEntity())
+        outbox.queueApplicationDeleted(application.id)
+    }
+
+    suspend fun deleteAllLocally() = dao.deleteAll()
 }

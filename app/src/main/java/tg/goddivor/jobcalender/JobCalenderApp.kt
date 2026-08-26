@@ -14,8 +14,6 @@ import tg.goddivor.jobcalender.reminders.ReminderNotifier
 import tg.goddivor.jobcalender.reminders.ReminderScheduler
 import tg.goddivor.jobcalender.data.remote.SyncSettings
 import tg.goddivor.jobcalender.data.seed.SeedImporter
-import java.time.Duration
-import java.time.Instant
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -76,27 +74,24 @@ class JobCalenderApp : Application() {
             }
             .onFailure { Log.e(TAG, "Seed import failed", it) }
 
-        if (!empty) syncOnLaunchIfStale()
+        if (!empty) refreshOnLaunch()
     }
 
     /**
-     * Syncing at launch is a convenience, not a requirement: it only runs when the last one is over
-     * a day old, and a failure never surfaces here. The database is local and authoritative.
+     * The server is fed by the jobing MCP, so the copy on this device is stale the moment the owner
+     * touches their machine. Refreshing on every launch is therefore the normal case, not a
+     * periodic chore: there is no staleness delay. A failure never surfaces here; with no network
+     * the app simply shows what it last received.
      */
-    private suspend fun syncOnLaunchIfStale() {
-        val stored = syncSettings.state.first()
-        if (!stored.syncOnLaunch) return
-
-        val last = stored.lastSyncAt
-        if (last != null && Duration.between(last, Instant.now()) < STALE_AFTER) return
+    private suspend fun refreshOnLaunch() {
+        if (!syncSettings.state.first().syncOnLaunch) return
 
         runCatching { syncEngine.sync() }
-            .onSuccess { Log.i(TAG, "Launch sync: $it") }
-            .onFailure { Log.w(TAG, "Launch sync failed", it) }
+            .onSuccess { Log.i(TAG, "Launch refresh: $it") }
+            .onFailure { Log.w(TAG, "Launch refresh failed", it) }
     }
 
     private companion object {
         const val TAG = "JobCalender"
-        val STALE_AFTER: Duration = Duration.ofHours(24)
     }
 }

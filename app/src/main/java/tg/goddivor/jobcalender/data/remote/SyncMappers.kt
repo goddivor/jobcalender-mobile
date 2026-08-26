@@ -18,22 +18,24 @@ import java.time.LocalTime
  * would mean the two sides disagree about the domain.
  */
 
-fun ApplicationWithEvents.toDto() = ApplicationDto(
-    id = application.id,
-    employer = application.employer,
-    position = application.position,
-    reference = application.reference,
-    channel = application.channel.name,
-    status = application.status.name,
-    sentAt = application.sentAt?.toString(),
-    closingDate = application.closingDate?.toString(),
-    folder = application.folder,
-    contactName = application.contactName,
-    contactEmail = application.contactEmail,
-    contactPhone = application.contactPhone,
-    note = application.note,
-    updatedAt = application.updatedAt.toString(),
-    events = events.map { it.toDto() },
+fun ApplicationWithEvents.toDto() = application.toDto(events.map { it.toDto() })
+
+fun Application.toDto(events: List<EventDto>) = ApplicationDto(
+    id = id,
+    employer = employer,
+    position = position,
+    reference = reference,
+    channel = channel.name,
+    status = status.name,
+    sentAt = sentAt?.toString(),
+    closingDate = closingDate?.toString(),
+    folder = folder,
+    contactName = contactName,
+    contactEmail = contactEmail,
+    contactPhone = contactPhone,
+    note = note,
+    updatedAt = updatedAt.toString(),
+    events = events,
 )
 
 fun Event.toDto() = EventDto(

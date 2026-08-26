@@ -160,15 +160,17 @@
     <string name="settings_section_sync">Synchronisation</string>
     <string name="settings_last_sync">Dernière synchronisation\u00A0: %1$s</string>
     <string name="settings_never_synced">Jamais synchronisé.</string>
-    <string name="settings_sync_now">Synchroniser maintenant</string>
-    <string name="settings_syncing">Synchronisation en cours\u2026</string>
-    <string name="settings_sync_on_launch">Synchroniser au lancement</string>
-    <string name="settings_sync_on_launch_sub">Seulement si la dernière synchronisation date de plus de 24\u00A0h</string>
+    <string name="settings_sync_now">Actualiser</string>
+    <string name="settings_syncing">Actualisation\u2026</string>
+    <string name="settings_sync_on_launch">Actualiser à l\'ouverture</string>
+    <string name="settings_sync_on_launch_sub">À chaque ouverture, dès qu\'une connexion est disponible</string>
     <string name="settings_offline_note">Vos données restent enregistrées sur l\'appareil.</string>
     <string name="settings_sync_unavailable">La synchronisation n\'est pas configurée dans cette version.</string>
-    <string name="settings_sync_pushed">Envoyé\u00A0: %1$d candidatures, %2$d événements.</string>
     <string name="settings_sync_pulled">Reçu\u00A0: %1$d candidatures, %2$d événements.</string>
-    <string name="settings_sync_uptodate">Déjà à jour.</string>
+    <string name="settings_sync_pulled_and_sent">Reçu\u00A0: %1$d candidatures, %2$d événements. %3$d modification envoyée.</string>
+    <string name="settings_sync_blocked">%1$d modification en attente d\'envoi. Rien n\'a été récupéré, pour ne pas l\'effacer.</string>
+    <string name="settings_sync_remote_empty">Le serveur ne renvoie rien alors que ce téléphone contient des données. Rien n\'a été touché.</string>
+    <string name="settings_sync_pending">%1$d modification en attente d\'envoi</string>
     <string name="settings_sync_failed">Échec de la synchronisation (%1$s). Réessayez plus tard.</string>
 
     <string name="settings_section_appearance">Apparence</string>
@@ -176,7 +178,7 @@
     <string name="settings_sync_sub_configured">Configurée\u00A0· dernière synchronisation %1$s</string>
     <string name="settings_sync_sub_none">Non configurée</string>
     <string name="settings_reminders_sub">La veille, une heure avant, échéances</string>
-    <string name="settings_data_sub">Contenu, export, import</string>
+    <string name="settings_data_sub">Ce que contient ce téléphone</string>
     <string name="settings_about_sub">JobCalender stable %1$s</string>
 
     <string name="appearance_section_theme">Thème</string>
@@ -211,16 +213,8 @@
     <string name="settings_data_summary">%1$d candidatures, %2$d événements</string>
     <string name="data_section_content">Contenu</string>
     <string name="data_stored_locally">Enregistrées sur cet appareil</string>
-    <string name="data_section_backup">Sauvegarde</string>
-    <string name="data_export">Exporter</string>
-    <string name="data_export_sub">Écrit un fichier JSON que vous choisissez où ranger</string>
-    <string name="data_import">Importer</string>
-    <string name="data_import_sub">Remplace tout le contenu local</string>
-    <string name="data_file_name">jobcalender-%1$s.json</string>
-    <string name="data_exported">Exporté\u00A0: %1$d candidatures, %2$d événements.</string>
-    <string name="data_imported">Importé\u00A0: %1$d candidatures, %2$d événements.</string>
-    <string name="data_unreadable">Fichier illisible ou d\'un autre format.</string>
-    <string name="data_failed">Échec (%1$s).</string>
+    <string name="data_pending_sub">Elles partiront à la prochaine actualisation</string>
+    <string name="data_source_note">Les candidatures sont enregistrées sur votre serveur et alimentées depuis votre ordinateur. Ce téléphone en garde la dernière copie reçue, et remonte les modifications que vous y faites.</string>
 
     <string name="settings_section_about">À propos</string>
     <string name="settings_version">Version %1$s</string>

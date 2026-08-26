@@ -9,7 +9,10 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.flow.first
 import tg.goddivor.jobcalender.data.remote.SyncApi
+import tg.goddivor.jobcalender.data.remote.SyncCredentials
+import tg.goddivor.jobcalender.data.remote.SyncSettings
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -45,4 +48,10 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideSyncApi(retrofit: Retrofit): SyncApi = retrofit.create(SyncApi::class.java)
+
+    /** The outbox asks for the credentials only when it has something to send. */
+    @Provides
+    @Singleton
+    fun provideSyncCredentials(settings: SyncSettings): SyncCredentials =
+        SyncCredentials { settings.state.first() }
 }

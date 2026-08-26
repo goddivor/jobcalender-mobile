@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import tg.goddivor.jobcalender.data.local.ApplicationDao
 import tg.goddivor.jobcalender.data.local.EventDao
+import tg.goddivor.jobcalender.data.local.PendingWriteDao
 import tg.goddivor.jobcalender.data.local.JobCalenderDatabase
 import javax.inject.Singleton
 
@@ -32,4 +33,8 @@ object DatabaseModule {
 
     @Provides
     fun provideEventDao(database: JobCalenderDatabase): EventDao = database.eventDao()
+
+    @Provides
+    fun providePendingWriteDao(database: JobCalenderDatabase): PendingWriteDao =
+        database.pendingWriteDao()
 }

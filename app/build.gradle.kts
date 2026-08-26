@@ -17,8 +17,8 @@ android {
         applicationId = "tg.goddivor.jobcalender"
         minSdk = 26
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.4.0"
+        versionCode = 6
+        versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Only the address the sync form starts from, and it is public. The key that opens
@@ -139,6 +139,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.kotlinx.coroutines.test)
