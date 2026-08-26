@@ -108,18 +108,23 @@
 
     <!-- About and updates -->
     <string name="about_title">À propos</string>
-    <string name="about_version">Version %1$s</string>
-    <string name="about_section_update">Mise à jour</string>
+    <string name="about_version">Version</string>
+    <string name="about_version_value">Stable %1$s (%2$s)</string>
     <string name="about_check">Rechercher une mise à jour</string>
     <string name="about_checking">Vérification\u2026</string>
-    <string name="about_up_to_date">JobCalender est à jour.</string>
-    <string name="about_releases">Publications</string>
-    <string name="about_repository">github.com/goddivor/jobcalender-mobile</string>
-    <string name="about_section_data">Données</string>
-    <string name="about_data_summary">%1$d candidatures, %2$d événements</string>
-    <string name="about_never_synced">Jamais synchronisé</string>
+    <string name="about_no_update">Aucune mise à jour disponible</string>
+    <string name="about_whats_new">Nouveautés</string>
+    <string name="about_whats_new_versions">Dernière\u00A0: v%1$s\u00A0· installée\u00A0: %2$s</string>
+    <string name="about_whats_new_empty">Le journal des versions n\'a pas pu être récupéré. Réessayez une fois connecté.</string>
+    <string name="about_website">Site de l\'application</string>
+    <string name="about_github">GitHub</string>
+
     <string name="about_section_license">Licence</string>
-    <string name="about_license">Projet personnel. Tous droits réservés.</string>
+    <string name="license_holder">goddivor</string>
+    <string name="license_all_rights">Tous droits réservés</string>
+    <string name="license_open_repository">Ouvrir le dépôt</string>
+    <string name="license_text">Copyright 2026 goddivor\n\nProjet personnel. Le code source est publié sur GitHub pour suivre le développement et distribuer les versions, non pour être réemployé.\n\nAucune autorisation n\'est accordée de copier, de modifier, de redistribuer ni de vendre ce logiciel, en tout ou en partie, sans l\'accord écrit préalable de l\'auteur.\n\nLe logiciel est fourni en l\'état, sans garantie d\'aucune sorte.</string>
+    <string name="action_ok">OK</string>
 
     <string name="update_available_title">Mise à jour disponible</string>
     <string name="update_meta">Version %1$s</string>
@@ -167,18 +172,59 @@
     <string name="settings_sync_failed">Échec de la synchronisation (%1$s). Réessayez plus tard.</string>
 
     <string name="settings_section_appearance">Apparence</string>
-    <string name="theme_light">Clair</string>
-    <string name="theme_dark">Sombre</string>
+    <string name="settings_appearance_sub">Thème, couleurs de l\'appareil, noir intégral</string>
+    <string name="settings_sync_sub_configured">Configurée\u00A0· dernière synchronisation %1$s</string>
+    <string name="settings_sync_sub_none">Non configurée</string>
+    <string name="settings_reminders_sub">La veille, une heure avant, échéances</string>
+    <string name="settings_data_sub">Contenu, export, import</string>
+    <string name="settings_about_sub">JobCalender stable %1$s</string>
+
+    <string name="appearance_section_theme">Thème</string>
+    <string name="theme_mode_system">Système</string>
+    <string name="theme_mode_light">Clair</string>
+    <string name="theme_mode_dark">Sombre</string>
+    <string name="palette_default">Par défaut</string>
+    <string name="palette_dynamic">Couleurs de l\'appareil</string>
+    <string name="palette_dynamic_note">Les couleurs de l\'appareil suivent le fond d\'écran, à partir d\'Android 12. Les quatre couleurs de statut ne changent jamais\u00A0: un statut garde le même sens partout.</string>
     <string name="theme_amoled">Noir intégral</string>
-    <string name="theme_follow_system">Suivre le système</string>
-    <string name="settings_follow_system_sub">Bascule entre clair et sombre avec Android</string>
-    <string name="settings_dynamic_color">Couleurs de l\'appareil</string>
-    <string name="settings_dynamic_color_sub">Material You. Les couleurs de statut ne changent pas.</string>
+    <string name="theme_amoled_sub">Fonds vraiment noirs en thème sombre, pour les écrans OLED</string>
+    <string name="theme_selected">Thème sélectionné</string>
+
+    <string name="sync_intro">La synchronisation recopie vos candidatures sur votre serveur et les retrouve sur un autre appareil. L\'application fonctionne entièrement sans elle\u00A0: tout reste enregistré sur ce téléphone.</string>
+    <string name="sync_section_config">Configuration</string>
+    <string name="sync_server_url">Adresse du serveur</string>
+    <string name="sync_config_key">Clé de configuration</string>
+    <string name="sync_config_key_hint">collez votre clé</string>
+    <string name="sync_config_key_help">La clé n\'est jamais enregistrée sur le serveur ni affichée après coup. Elle sert une fois, pour récupérer l\'adresse d\'accès et le jeton.</string>
+    <string name="sync_fetch_config">Récupérer la configuration</string>
+    <string name="sync_config_fetched">Configuration récupérée</string>
+    <string name="sync_config_from">Depuis %1$s</string>
+    <string name="sync_err_key">Clé de configuration refusée par le serveur.</string>
+    <string name="sync_err_offline">Connexion impossible. Vérifiez votre connexion.</string>
+    <string name="sync_err_server">Erreur du serveur (%1$d).</string>
+    <string name="sync_refresh_config">Actualiser la configuration</string>
+    <string name="sync_refresh_config_sub">Redemande la clé et garde l\'adresse</string>
+    <string name="sync_reset">Réinitialiser</string>
+    <string name="sync_reset_sub">Efface l\'adresse et le jeton. Les données locales restent.</string>
 
     <string name="settings_section_data">Données</string>
     <string name="settings_data_summary">%1$d candidatures, %2$d événements</string>
+    <string name="data_section_content">Contenu</string>
+    <string name="data_stored_locally">Enregistrées sur cet appareil</string>
+    <string name="data_section_backup">Sauvegarde</string>
+    <string name="data_export">Exporter</string>
+    <string name="data_export_sub">Écrit un fichier JSON que vous choisissez où ranger</string>
+    <string name="data_import">Importer</string>
+    <string name="data_import_sub">Remplace tout le contenu local</string>
+    <string name="data_file_name">jobcalender-%1$s.json</string>
+    <string name="data_exported">Exporté\u00A0: %1$d candidatures, %2$d événements.</string>
+    <string name="data_imported">Importé\u00A0: %1$d candidatures, %2$d événements.</string>
+    <string name="data_unreadable">Fichier illisible ou d\'un autre format.</string>
+    <string name="data_failed">Échec (%1$s).</string>
+
     <string name="settings_section_about">À propos</string>
     <string name="settings_version">Version %1$s</string>
+    <string name="action_back">Retour</string>
 
     <!-- Writing -->
     <string name="action_add">Ajouter</string>

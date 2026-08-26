@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Only the launch theme lives in XML; everything after setContent is JobCalenderTheme. -->
+    <!-- Everything after setContent is JobCalenderTheme; these two only cover the window before it. -->
     <style name="Theme.JobCalender" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- The system draws this one before the process starts, so it is the only chance to avoid a
+         white flash on a dark device: the background has a values-night twin. -->
+    <style name="Theme.JobCalender.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.JobCalender</item>
+    </style>
 </resources>
