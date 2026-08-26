@@ -17,24 +17,20 @@ android {
         applicationId = "tg.goddivor.jobcalender"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.2.0"
+        versionCode = 4
+        versionName = "1.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // The config key is compiled in, never committed: it lives in local.properties, which is
-        // gitignored. Without it the app simply has no sync, which is a working offline app.
+        // Only the address the sync form starts from, and it is public. The key that opens
+        // /api/config is typed by the user and never compiled in: a published APK can be taken
+        // apart, so anything embedded in it is effectively published too.
         val local = Properties().apply {
             rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
         }
         buildConfigField(
             "String",
-            "SYNC_CONFIG_URL",
-            "\"${local.getProperty("SYNC_CONFIG_URL", "")}\"",
-        )
-        buildConfigField(
-            "String",
-            "SYNC_CONFIG_KEY",
-            "\"${local.getProperty("SYNC_CONFIG_KEY", "")}\"",
+            "SYNC_DEFAULT_URL",
+            "\"${local.getProperty("SYNC_CONFIG_URL", "https://jobcalender-sync-api.vercel.app")}\"",
         )
     }
 
@@ -113,6 +109,7 @@ tasks.withType<JavaCompile>().configureEach {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
