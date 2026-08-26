@@ -146,5 +146,5 @@ fun Instant.readable(): String {
         today().minusDays(1) -> stringResource(R.string.relative_yesterday)
         else -> day.short()
     }
-    return "$label ${moment.toLocalTime().hhmm()}"
+    return stringResource(R.string.date_at_time, label, moment.toLocalTime().hhmm())
 }

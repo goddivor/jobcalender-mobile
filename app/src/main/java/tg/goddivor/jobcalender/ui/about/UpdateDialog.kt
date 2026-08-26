@@ -21,8 +21,8 @@ import tg.goddivor.jobcalender.updates.UpdateUiState
 
 /**
  * One dialog for the whole update path: offer, download, install, and the case where Android has
- * not been told this app may install packages. Dismissing it remembers the version, so it stops
- * coming back for that one.
+ * not been told this app may install packages. Dismissing it closes it for this run only; the next
+ * launch checks again and offers again, because an update nobody is reminded of never gets applied.
  */
 @Composable
 fun UpdateDialog(

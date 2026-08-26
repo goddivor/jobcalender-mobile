@@ -43,12 +43,16 @@ class ApkInstaller @Inject constructor(
         runCatching { context.startActivity(intent) }
     }
 
+    /** The APK for this version, once it has been downloaded whole. */
+    fun downloaded(version: String): File? =
+        apkFile(version).takeIf { it.exists() && it.length() > 0 }
+
     fun enqueue(release: ReleaseInfo): Long? {
         val url = release.apkUrl ?: return null
-        val fileName = "jobcalender-${release.version}.apk"
 
         // Clear a partial file from an interrupted attempt: DownloadManager would otherwise append.
-        File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName).delete()
+        apkFile(release.version).delete()
+        val fileName = apkFile(release.version).name
 
         val request = DownloadManager.Request(Uri.parse(url))
             .setTitle("JobCalender ${release.version}")
@@ -78,11 +82,7 @@ class ApkInstaller @Inject constructor(
 
     fun install(version: String): Boolean {
         if (!canInstall()) return false
-        val file = File(
-            context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
-            "jobcalender-$version.apk",
-        )
-        if (!file.exists()) return false
+        val file = downloaded(version) ?: return false
 
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.updates", file)
         val intent = Intent(Intent.ACTION_VIEW)
@@ -90,6 +90,11 @@ class ApkInstaller @Inject constructor(
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
         return runCatching { context.startActivity(intent) }.isSuccess
     }
+
+    private fun apkFile(version: String) = File(
+        context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+        "jobcalender-$version.apk",
+    )
 
     private companion object {
         const val APK_MIME = "application/vnd.android.package-archive"

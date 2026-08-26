@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -40,7 +41,9 @@ fun WhatsNewScreen(
 
     LaunchedEffect(Unit) { viewModel.loadWhatsNew() }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    // No app bar here, so the window insets have to be applied by hand or the title lands under
+    // the status bar and the button under the gesture handle.
+    Column(modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
         Column(
             modifier = Modifier
                 .weight(1f)
