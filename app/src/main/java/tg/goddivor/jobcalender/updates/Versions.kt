@@ -30,6 +30,18 @@ fun markdownToText(markdown: String): String = markdown
             .replace(Regex("`(.+?)`"), "$1")
             .replace(Regex("\\[(.+?)]\\((.+?)\\)"), "$1")
     }
+    .fold(mutableListOf<String>()) { lines, line ->
+        // A body wrapped at some column arrives with hard newlines inside its sentences. Rejoin a
+        // continuation with the line it belongs to, so a phone reflows it at its own width. A blank
+        // line still ends the paragraph, and a bullet always starts one.
+        val previous = lines.lastOrNull()
+        when {
+            line.isBlank() -> if (previous != null && previous.isNotBlank()) lines.add("")
+            line.startsWith("• ") || previous.isNullOrBlank() -> lines.add(line)
+            else -> lines[lines.lastIndex] = "$previous $line"
+        }
+        lines
+    }
     .filter { it.isNotBlank() }
     .joinToString("\n")
     .trim()

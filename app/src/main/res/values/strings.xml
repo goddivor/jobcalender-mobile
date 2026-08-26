@@ -288,6 +288,7 @@
     <string name="status_needs_date">Ce statut demande une date\u00A0: renseignez l\'événement.</string>
 
     <!-- Relative days, used by the calendar header and the timeline -->
+    <string name="date_at_time">%1$s à %2$s</string>
     <string name="relative_today">aujourd\'hui</string>
     <string name="relative_tomorrow">demain</string>
     <string name="relative_yesterday">hier</string>

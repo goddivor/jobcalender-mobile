@@ -37,11 +37,26 @@ class UpdateFlow @Inject constructor(
 
     private var downloadId: Long? = null
 
-    /** Silent: says nothing when up to date, offline, or when this version was waved away. */
+    /**
+     * Runs at every launch and offers whatever is newer, every time. A refusal closes the dialog for
+     * this run only: an update that stayed hidden until the user walked into the settings on their
+     * own is an update that never gets installed.
+     */
     fun checkOnLaunch() {
         scope.launch {
-            val release = runCatching { checker.startupUpdate() }.getOrNull() ?: return@launch
-            _state.update { it.copy(release = release) }
+            val release = runCatching { checker.check(force = true) }.getOrNull() ?: return@launch
+            if (!release.isNewerThanInstalled) return@launch
+            _state.update {
+                // A finished download from an earlier run is reused: the file is already there.
+                it.copy(
+                    release = release,
+                    install = if (installer.downloaded(release.version) != null) {
+                        InstallState.ReadyToInstall
+                    } else {
+                        InstallState.Idle
+                    },
+                )
+            }
         }
     }
 
@@ -51,11 +66,17 @@ class UpdateFlow @Inject constructor(
         scope.launch {
             _state.update { it.copy(checking = true, checkedAndUpToDate = false) }
             val release = runCatching { checker.check(force = true) }.getOrNull()
+            val newer = release?.takeIf { found -> found.isNewerThanInstalled }
             _state.update {
                 it.copy(
                     checking = false,
-                    release = release?.takeIf { found -> found.isNewerThanInstalled },
-                    checkedAndUpToDate = release == null || !release.isNewerThanInstalled,
+                    release = newer,
+                    checkedAndUpToDate = newer == null,
+                    install = if (newer != null && installer.downloaded(newer.version) != null) {
+                        InstallState.ReadyToInstall
+                    } else {
+                        InstallState.Idle
+                    },
                 )
             }
         }
@@ -63,6 +84,12 @@ class UpdateFlow @Inject constructor(
 
     fun download() {
         val release = _state.value.release ?: return
+        // Downloading a file that is already on disk is the same file fetched twice.
+        if (installer.downloaded(release.version) != null) {
+            _state.update { it.copy(install = InstallState.ReadyToInstall) }
+            install()
+            return
+        }
         downloadId = installer.enqueue(release)
         if (downloadId == null) {
             _state.update { it.copy(install = InstallState.Failed("download")) }
@@ -95,17 +122,30 @@ class UpdateFlow @Inject constructor(
             _state.update { it.copy(install = InstallState.PermissionNeeded) }
             return
         }
-        installer.install(version)
+        if (!installer.install(version)) {
+            _state.update { it.copy(install = InstallState.Failed("install")) }
+        }
     }
 
     fun openInstallSettings() = installer.openInstallPermissionSettings()
 
+    /**
+     * Called when the activity comes back to the front. Granting the install permission happens in
+     * the system settings, in another task: without this, the app returns still showing the blocked
+     * dialog and the only way forward is to kill it and start again.
+     */
+    fun onResumed() {
+        val state = _state.value
+        if (state.release == null) return
+        if (state.install !is InstallState.PermissionNeeded || !installer.canInstall()) return
+        val ready = installer.downloaded(state.release.version) != null
+        _state.update { it.copy(install = if (ready) InstallState.ReadyToInstall else InstallState.Idle) }
+        if (ready) install() else download()
+    }
+
+    /** Closes the dialog for this run. Nothing is remembered: the next launch offers it again. */
     fun dismiss() {
-        val version = _state.value.release?.version ?: return
-        scope.launch {
-            checker.dismiss(version)
-            _state.update { it.copy(release = null, install = InstallState.Idle) }
-        }
+        _state.update { it.copy(release = null, install = InstallState.Idle) }
     }
 
     private companion object {

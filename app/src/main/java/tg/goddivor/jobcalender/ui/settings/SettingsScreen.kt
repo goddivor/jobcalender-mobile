@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,10 +53,12 @@ fun SettingsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
+            // A dedicated bitmap, not R.mipmap.ic_launcher: on API 26 and up that resolves to the
+            // adaptive-icon XML, which painterResource cannot load and which crashes this screen.
             Image(
-                painter = painterResource(R.mipmap.ic_launcher),
+                painter = painterResource(R.drawable.app_logo),
                 contentDescription = stringResource(R.string.app_name),
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(15.dp)),
             )
         }
         SettingsDivider()

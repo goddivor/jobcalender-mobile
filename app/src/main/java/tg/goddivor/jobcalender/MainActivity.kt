@@ -63,6 +63,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Returning from the system's unknown-sources screen is the only signal that the permission
+        // may have just been granted: there is no callback for it.
+        viewModel.onResumed()
+    }
+
     private companion object {
         const val MAX_HOLD_MS = 1_000L
         const val EXIT_FADE_MS = 300L

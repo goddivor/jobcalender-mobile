@@ -5,7 +5,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -69,28 +71,20 @@ class ReleaseChecker @Inject constructor(
         if (!force) {
             cached()?.let { return it }
         }
-        val fetched = runCatching { fetch() }.getOrNull() ?: return cached()
+        val fetched = withContext(Dispatchers.IO) { runCatching { fetch() }.getOrNull() } ?: return cached()
         store(fetched)
         return fetched
-    }
-
-    /** The startup check stays silent about a version the user already waved away. */
-    suspend fun startupUpdate(): ReleaseInfo? {
-        val release = check() ?: return null
-        if (!release.isNewerThanInstalled) return null
-        val dismissed = context.updateStore.data.first()[DISMISSED]
-        return release.takeIf { it.version != dismissed }
-    }
-
-    suspend fun dismiss(version: String) {
-        context.updateStore.edit { it[DISMISSED] = version }
     }
 
     /**
      * Every published version, newest first. Not cached in preferences: the screen that reads it is
      * opened on purpose, and an empty list is a legitimate answer when there is no network.
      */
-    suspend fun history(): List<ReleaseNote> = runCatching {
+    suspend fun history(): List<ReleaseNote> = withContext(Dispatchers.IO) {
+        runCatching { fetchHistory() }.getOrDefault(emptyList())
+    }
+
+    private fun fetchHistory(): List<ReleaseNote> {
         val request = Request.Builder()
             .url(RELEASES_URL)
             .header("Accept", "application/vnd.github+json")
@@ -99,7 +93,7 @@ class ReleaseChecker @Inject constructor(
             if (!response.isSuccessful) return emptyList()
             val body = response.body?.string().orEmpty()
             if (body.isBlank()) return emptyList()
-            json.decodeFromString<List<GithubRelease>>(body).map { release ->
+            return json.decodeFromString<List<GithubRelease>>(body).map { release ->
                 ReleaseNote(
                     version = release.tagName.removePrefix("v"),
                     publishedAt = release.publishedAt?.let { runCatching { Instant.parse(it) }.getOrNull() },
@@ -107,7 +101,7 @@ class ReleaseChecker @Inject constructor(
                 )
             }
         }
-    }.getOrDefault(emptyList())
+    }
 
     private suspend fun cached(): ReleaseInfo? {
         val stored = context.updateStore.data.first()
@@ -170,6 +164,5 @@ class ReleaseChecker @Inject constructor(
         val PAGE_URL = stringPreferencesKey("page_url")
         val SIZE = stringPreferencesKey("size")
         val FETCHED_AT = stringPreferencesKey("fetched_at")
-        val DISMISSED = stringPreferencesKey("dismissed_version")
     }
 }

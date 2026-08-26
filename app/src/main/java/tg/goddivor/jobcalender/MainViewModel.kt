@@ -39,6 +39,9 @@ class MainViewModel @Inject constructor(
 
     fun dismissUpdate() = updates.dismiss()
 
+    /** The install permission is granted in another task; coming back is when to act on it. */
+    fun onResumed() = updates.onResumed()
+
     fun openInstallSettings() = updates.openInstallSettings()
 
     val theme = settings.state
