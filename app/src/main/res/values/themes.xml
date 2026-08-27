@@ -7,7 +7,9 @@
          white flash on a dark device: the background has a values-night twin. -->
     <style name="Theme.JobCalender.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <!-- The complete mark, body included, not the adaptive foreground: that one has the "C"
+             cut out, so on a dark background the window showed straight through it. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
         <item name="windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
         <item name="postSplashScreenTheme">@style/Theme.JobCalender</item>
     </style>
