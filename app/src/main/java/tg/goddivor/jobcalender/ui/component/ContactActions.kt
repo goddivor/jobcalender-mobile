@@ -4,17 +4,18 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tg.goddivor.jobcalender.R
@@ -44,7 +46,7 @@ fun ContactActions(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         ContactButton(
-            icon = Icons.Filled.MailOutline,
+            brand = R.drawable.ic_brand_gmail,
             label = stringResource(R.string.action_email),
             enabled = email != null,
             modifier = Modifier.weight(1f),
@@ -58,7 +60,7 @@ fun ContactActions(
         ) { context.launch(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))) }
 
         ContactButton(
-            icon = Icons.Filled.Chat,
+            brand = R.drawable.ic_brand_whatsapp,
             label = stringResource(R.string.action_whatsapp),
             enabled = phone != null,
             modifier = Modifier.weight(1f),
@@ -69,12 +71,18 @@ fun ContactActions(
     }
 }
 
+/**
+ * One of the three ways out. A button that opens a named product carries its mark; calling opens no
+ * product in particular, so it keeps Material's handset. A disabled button fades whichever it is,
+ * mark included, or a full-colour logo would read as available.
+ */
 @Composable
 private fun ContactButton(
-    icon: ImageVector,
     label: String,
     enabled: Boolean,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    @DrawableRes brand: Int? = null,
     onClick: () -> Unit,
 ) {
     Surface(
@@ -94,11 +102,21 @@ private fun ContactButton(
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
             }
-            Icon(imageVector = icon, contentDescription = null, tint = tint)
+            when {
+                brand != null -> Image(
+                    painter = painterResource(brand),
+                    contentDescription = null,
+                    alpha = if (enabled) 1f else DISABLED_ALPHA,
+                    modifier = Modifier.size(24.dp),
+                )
+                icon != null -> Icon(imageVector = icon, contentDescription = null, tint = tint)
+            }
             Text(text = label, style = MaterialTheme.typography.labelMedium, color = tint)
         }
     }
 }
+
+private const val DISABLED_ALPHA = 0.4f
 
 /** A missing handler app must not take the screen down with it. */
 internal fun Context.launch(intent: Intent) {

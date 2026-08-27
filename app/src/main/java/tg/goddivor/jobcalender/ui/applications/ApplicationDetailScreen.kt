@@ -55,7 +55,9 @@ import tg.goddivor.jobcalender.R
 import tg.goddivor.jobcalender.domain.model.EventOutcome
 import tg.goddivor.jobcalender.domain.model.EventType
 import tg.goddivor.jobcalender.domain.model.Status
+import tg.goddivor.jobcalender.ui.component.ChannelIcon
 import tg.goddivor.jobcalender.ui.component.ContactActions
+import tg.goddivor.jobcalender.ui.component.MeetingIcon
 import tg.goddivor.jobcalender.ui.component.Pill
 import tg.goddivor.jobcalender.ui.component.StatusPill
 import tg.goddivor.jobcalender.ui.component.launch
@@ -144,7 +146,7 @@ fun ApplicationDetailScreen(
                     enabled = link != null,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 ) {
-                    Icon(Icons.Filled.Videocam, contentDescription = null, modifier = Modifier.size(18.dp))
+                    MeetingIcon(link = link, mode = state.nextMode)
                     Text(
                         text = stringResource(R.string.action_open_link),
                         modifier = Modifier.padding(start = 8.dp),
@@ -239,7 +241,11 @@ fun ApplicationDetailScreen(
             }
 
             SectionLabel(stringResource(R.string.detail_section_tracking))
-            Fact(stringResource(R.string.detail_channel), stringResource(application.channel.label))
+            Fact(
+                label = stringResource(R.string.detail_channel),
+                value = stringResource(application.channel.label),
+                leading = { ChannelIcon(application.channel) },
+            )
             Fact(
                 label = stringResource(R.string.detail_sent_on),
                 value = application.sentAt?.long() ?: stringResource(R.string.application_never_sent),
@@ -326,7 +332,14 @@ private fun SectionLabel(text: String) {
 }
 
 @Composable
-private fun Fact(label: String, value: String, muted: Boolean = false, monospace: Boolean = false, hint: String? = null) {
+private fun Fact(
+    label: String,
+    value: String,
+    muted: Boolean = false,
+    monospace: Boolean = false,
+    hint: String? = null,
+    leading: @Composable (() -> Unit)? = null,
+) {
     Column {
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
@@ -336,6 +349,9 @@ private fun Fact(label: String, value: String, muted: Boolean = false, monospace
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.width(96.dp),
             )
+            leading?.let {
+                Box(modifier = Modifier.padding(end = 8.dp)) { it() }
+            }
             Column(Modifier.weight(1f)) {
                 Text(
                     text = value,

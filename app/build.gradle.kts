@@ -17,8 +17,8 @@ android {
         applicationId = "tg.goddivor.jobcalender"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.5.0"
+        versionCode = 7
+        versionName = "1.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Only the address the sync form starts from, and it is public. The key that opens
