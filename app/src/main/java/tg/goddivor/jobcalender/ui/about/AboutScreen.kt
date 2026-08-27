@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tg.goddivor.jobcalender.R
+import tg.goddivor.jobcalender.ui.component.GithubIcon
 import tg.goddivor.jobcalender.ui.settings.PreferenceRow
 import tg.goddivor.jobcalender.ui.settings.SettingsDivider
 import tg.goddivor.jobcalender.ui.settings.SettingsTopBar
@@ -128,13 +129,19 @@ fun AboutScreen(
             ) {
                 LinkIcon(
                     label = stringResource(R.string.about_website),
-                    painter = null,
                     url = WEBSITE_URL,
+                    content = {
+                        Icon(
+                            imageVector = Icons.Outlined.Public,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    },
                 )
                 LinkIcon(
                     label = stringResource(R.string.about_github),
-                    painter = R.drawable.ic_github,
                     url = REPOSITORY_URL,
+                    content = { GithubIcon() },
                 )
             }
             Box(Modifier.height(8.dp))
@@ -152,7 +159,7 @@ fun AboutScreen(
 }
 
 @Composable
-private fun LinkIcon(label: String, painter: Int?, url: String) {
+private fun LinkIcon(label: String, url: String, content: @Composable () -> Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
     IconButton(
         onClick = {
@@ -165,19 +172,7 @@ private fun LinkIcon(label: String, painter: Int?, url: String) {
         },
         modifier = Modifier.padding(horizontal = 4.dp),
     ) {
-        if (painter == null) {
-            Icon(
-                imageVector = Icons.Outlined.Public,
-                contentDescription = label,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        } else {
-            Icon(
-                painter = painterResource(painter),
-                contentDescription = label,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
+        content()
     }
 }
 

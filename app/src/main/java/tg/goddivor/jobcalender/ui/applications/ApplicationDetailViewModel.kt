@@ -15,6 +15,7 @@ import tg.goddivor.jobcalender.data.repository.EventRepository
 import tg.goddivor.jobcalender.domain.model.Application
 import tg.goddivor.jobcalender.domain.model.Channel
 import tg.goddivor.jobcalender.domain.model.Event
+import tg.goddivor.jobcalender.domain.model.EventMode
 import tg.goddivor.jobcalender.domain.model.EventType
 import tg.goddivor.jobcalender.domain.model.Status
 import tg.goddivor.jobcalender.domain.usecase.loggedEventTypeFor
@@ -37,6 +38,7 @@ data class ApplicationDetailUiState(
     val application: Application? = null,
     val timeline: List<TimelineNode> = emptyList(),
     val nextLink: String? = null,
+    val nextMode: EventMode? = null,
     val awaitingLink: Boolean = false,
     val loaded: Boolean = false,
 )
@@ -71,6 +73,9 @@ class ApplicationDetailViewModel @Inject constructor(
                     }
                 },
                 nextLink = nextWithLink?.link,
+                // Carried alongside the link because the mark of a meeting is read from the link
+                // when it names a product, and from the mode when it does not.
+                nextMode = (nextWithLink ?: nextWithoutLink)?.mode,
                 awaitingLink = nextWithLink == null && nextWithoutLink != null,
                 loaded = true,
             )

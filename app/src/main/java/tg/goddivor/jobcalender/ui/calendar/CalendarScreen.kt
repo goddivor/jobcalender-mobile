@@ -50,6 +50,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tg.goddivor.jobcalender.R
 import tg.goddivor.jobcalender.domain.model.EventOutcome
 import tg.goddivor.jobcalender.domain.model.EventWithApplication
+import tg.goddivor.jobcalender.ui.component.MeetingIcon
 import tg.goddivor.jobcalender.ui.component.Pill
 import tg.goddivor.jobcalender.ui.format.hhmm
 import tg.goddivor.jobcalender.ui.format.label
@@ -197,7 +198,7 @@ private fun NextAppointmentCard(next: NextAppointment?, onOpen: (String) -> Unit
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(7.dp),
                 ) {
-                    Icon(Icons.Filled.Videocam, contentDescription = null, modifier = Modifier.size(18.dp))
+                    MeetingIcon(link = event.link, mode = mode)
                     Text(stringResource(mode.label), style = MaterialTheme.typography.bodySmall)
                     if (event.link == null) {
                         Text(
@@ -439,12 +440,16 @@ private fun EventRow(entry: EventWithApplication, inConflict: Boolean, onClick: 
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    Icon(
-                        imageVector = if (place != null) Icons.Filled.LocationOn else Icons.Filled.Videocam,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp),
-                    )
+                    if (place != null) {
+                        Icon(
+                            imageVector = Icons.Filled.LocationOn,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp),
+                        )
+                    } else {
+                        MeetingIcon(link = event.link, mode = event.mode, size = 16.dp)
+                    }
                     Text(
                         text = place ?: event.mode?.let { stringResource(it.label) }.orEmpty(),
                         style = MaterialTheme.typography.bodySmall,
